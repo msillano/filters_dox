@@ -1,0 +1,209 @@
+<html>
+ <!--
+  /**
+   *  XHTML Example page.
+   * From 
+   * 
+   *  @note
+   *     This documentation is build by Doxygen using the html2dox Filter.
+   *   All documentation blocks are proceesed  before  the HTML code.
+   *    JavaScript is commented at end, after HTML.
+   */
+  -->
+    <head>
+    <title> Test for local WIN/IE setup </title>
+    <BASE target ="_parent"/>
+    <meta http-equiv="Window-target" content="_top" />
+    <meta http-equiv="Content-Type" content="txt/html; charset=windows-1252" />
+    <meta http-equiv="Content-Language" content="en" />
+    <meta name="Description" content="OOXBricks Tests the local WIN installation. Developping o2xdl applications" />
+    <meta name="Author" content="OOXBricks" />
+    <meta name="Copyright" content="2004 OOXBricks - M.Sillano" />
+    <link rel = "stylesheet" href = "css/xsknbase.css" type = "text/css" media = "screen"/>
+    </head>
+
+	<body>
+        <table summary = 'body' border = '0'>
+
+<!-- header -->
+            <tr>
+                <td class = 'td1'>
+                    <img alt = 'logo' src = "images/imgG03.gif" width = "60" height = "60"/></td>
+                <td class = 'td2'>
+                    <DIV class = 'h1a'>OOXBricks</DIV>
+                    <DIV class = 'h1b'>XSKnife Version 1.2</DIV></td>
+                <td class = 'td3'>
+                    Oct 2004</td>
+            </tr>
+
+            <tr><td colspan = '3'><hr color = 'blue' noshade = 'true' size = '1'/></td>
+            </tr>
+
+<!-- title -->
+            <tr>
+                <td colspan = '3' class = 'central'>
+                    <H6> Development area</H6></td>
+            </tr>
+
+            <tr>
+                <td colspan = '3'>
+                    <p class = 'sub'>Converts HTML to XHTML using Tidy</p>
+                </td>
+            </tr>
+            <tr><td colspan = '3'><hr color = 'blue' noshade = 'true' size = '1'/></td>
+            </tr>
+<!-- central infos -->
+ <!--
+  /**
+   *    First internal block
+   */
+  -->
+
+            <tr>
+                <td colspan = '3'></td></tr>
+
+            <tr>
+                <td colspan = '3'>
+               <response1>
+                <b>USAGE:<br/> </b>
+                <div class = "smallbullet"> Wait...processing request... </div> </response1>
+               <response2 />
+<response3>
+<form action="http:/XSKnife01" method="get">
+<input type="hidden" name="XSKclass" value="OOXBRIKS-1.0.3" />
+<input type="hidden" name="XSKaction" value="TidyEnd"/>
+<input type="hidden" name="TidyResult" value="TidyResultFile"/>
+<input type="submit" value="Get result"/>
+</form>
+</response3>
+
+
+          <response4>
+		  <a href="XSKnife01?XSKclass=OOXBRIKS-1.0.3&amp;XSKaction=TidyGet">Click here to get result </a>
+          </response4>
+                </td>
+            </tr>
+<!-- footer -->
+<!--
+  /**
+   *    Second internal block
+   */
+  -->
+
+            <tr>
+                <td colspan = '3'><hr color = 'blue' noshade = 'true' size = '1'/></td></tr>
+            <tr>
+                <td colspan = '3' class = "small">
+                    <DIV class = "central">
+                        <a href = 'index.HTML' title = 'to intro'> back index</a>
+                    </DIV>
+                </td>
+            </tr>
+        </table>
+    </body>
+    <script LANGUAGE="JavaScript">
+        <!--
+
+// test client for MSXML 4 full functional
+/**
+
+This function is activated by an user click.
+Makes a test in WIN about MSXML local installation.
+
+@return  pop-up message.
+
+*/
+function testMSXML_onclick()
+{
+ try
+   {
+   var XSK_dom = new ActiveXObject("Msxml2.DOMDocument.4.0");
+   window.alert(" MSXML 4 is OK. Test passed. ");
+   return;
+   }
+  catch(e)
+    {
+    alert(" Not found MSXML 4. Test failed: "+ e.description);
+    }
+}
+// tests client for ADODB full functional
+/**
+
+This function is activated by an user click.
+Makes a test in WIN about ADODB local installation.
+
+@return  pop-up message.
+
+*/
+
+function testADODB_onclick()
+{
+ try
+   {
+var  fsu = new ActiveXObject("Scripting.FileSystemObject");
+var  tf = fsu.CreateTextFile("c:\\temp\\testfile.tmp", true);
+   // Write a line with a newline character.
+   tf.WriteLine ("This is a test.");
+   tf.Close();
+   }
+  catch(e)
+    {
+    alert(" Error writing local file: check permissions. Test failed: "+ e.description);
+    return;
+    }
+ try
+   {
+   var ado_rtecord = new ActiveXObject("ADODB.record");
+   }
+  catch(e)
+    {
+    alert(" ADODB not installed. Test failed: "+ e.description);
+    return;
+    }
+ try
+   {
+   var ado_stream = new ActiveXObject("ADODB.Stream");
+   ado_stream.Open();
+   }
+  catch(e)
+    {
+    alert(" ADODB not enabled. Test failed: "+ e.description);
+    return;
+    }
+    ado_stream.LoadFromFile("c:\\temp\\testfile.tmp");
+ try
+   {
+     ado_stream.SaveToFile("c:\\temp\\adofile.tmp",2);
+     alert(" ADODB is OK. Test passed. ");
+     return;
+   }
+  catch(e)
+    {
+    alert("  ADODB error writing: check permissions. Test failed: "+ e.description);
+    return;
+    }
+}
+
+/**
+
+This function is activated by an user click.
+Makes a test in WIN about IE local installation and permissions.
+
+@return error messages.
+
+*/
+function testIE6_onclick()
+{
+  var xml_dom = CreateXSKdom("XSKsys", "dummyTest", "utf-8");
+//  alert(xml_dom.xml);
+// for test
+  SFXSKPostAndNavigate(xml_dom, '../../XSKnife02.exe', 'c:/temp/dummy.html', '../../index.html');
+}
+
+// -->
+    </script>
+
+
+</html>
+
+

@@ -1,0 +1,19 @@
+[Desktop Entry]
+Type=service
+Actions=doxexecute;doxedit
+Encoding=UTF-8
+ServiceTypes=application/x-doxygen
+TryExec=doxywizard
+X-KDE-Priority=TopLevel
+X-KDE-Submenu=doxygen
+
+[Desktop Action doxexecute]
+Exec=launcher.sh %d doxygen \"%f\" 
+Icon=make
+Name=Build documentation
+
+[Desktop Action doxedit]
+Exec=doxywizard %f
+Icon=make
+Name=Edit doxygen file
+

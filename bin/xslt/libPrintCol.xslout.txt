@@ -1,0 +1,518 @@
+
+ /**
+ * @file libPrintCol.xsl
+ *
+ * XSLT library for scripts. Pretty-prints XML/XHTML files/fragments as collapsible tree with syntax color highlighting.
+ * This library can be "imported", so it is possible to overwrite
+ * some rules, to get the desired behaviour.
+ *
+ * @note The output is valid XHTML 1.1
+ * @note Requires STYLE definitions and some Javascript code.
+     - for head tags using external files,  see engine_libprintcol_template_03()
+     - for embedded standalone tags, see engine_libprintcol_template_02()
+ *
+ * @see libPrintXML.xsl for simpler b/w formatting.
+ *
+ * @version 10/09/07 for XHTML output
+ * @author   Copyright 1999-2004 The Apache Software Foundation @n
+ *           Modified by Marco Sillano (sillano@mclink.it).
+   
+ 
+* <hr /> xsl:stylesheet
+ *  XML version  = '1.0'
+ *      encoding = 'utf-8'
+ */
+
+
+/**@{*/
+
+
+ /**
+ * Pretty-prints XML in color, entry point.
+ *
+ * Process a  XML/XHTML lpc_fragment and produces as output an HTML lpc_fragment showing the code.@n
+ * Great sample of "data-driven" style in XSLT transformation.
+ *
+ * @par Use:
+ *       <tt>&lt;xsl:call-template  name="printCol" /&gt;</tt>
+ *
+ * @par Use:
+ *     <tt>  &lt;div class="lpc_fragment" &gt; @n
+ *              &nbsp;&nbsp;    &lt;xsl:apply-templates  select="node" mode="printCol" /&gt;@n
+ *               &lt;/div&gt;  </tt>
+ *
+ * @see xml2html.xsl for a sample of use.
+   
+
+   @htmlonly 
+           <style type="text/css" xmlns="http://www.w3.org/1999/xhtml">
+                body  {background-color: white; color: black; }
+                .b  {cursor:pointer; color:red; font-weight:bold; text-decoration:none; padding-right: 2px;}
+                .e  {border: 0px; margin: 0px 0px 0px 2em; text-indent:-1em;}
+                .en {color:#0000FF}
+                .an {color:#C00000}
+                .av {color:#888888}
+                .c  {color:#008800}
+                .t  {color:#008800}
+                .u  {color: #EE82EE}
+                .m  {color:navy}
+                .pi {color:red}
+                pre {margin:0px;}
+                div {border:0; padding:0; margin:0;}
+                .lpc_fragment {font-size:9pt; font-family: Courier, "Courier New", monospace;
+                    }
+
+            </style><script type="text/javascript"><!--
+
+function doClick(event) {
+
+    var mark = window.event ?  window.event.srcElement:  event.target;
+
+    while ((mark.className != "b") && (mark.nodeName != "body")) {
+        mark = mark.parentNode
+    }
+
+    var e = mark;
+    while ((e.className != "e") && (e.nodeName != "body")) {
+        e = e.parentNode
+    }
+
+    if (mark.childNodes[0].nodeValue == "+") {
+        mark.childNodes[0].nodeValue = "-";
+        for (var i = 1; i < e.childNodes.length; i++) {
+            var name = e.childNodes[i].nodeName;
+            if (name != "#text") {
+                if (name == "pre" || name == "span") {
+                   window.status = "inline";
+                   e.childNodes[i].style.display = "inline";
+                } else {
+                   e.childNodes[i].style.display = "block";
+                }
+            }
+        }
+    } else if (mark.childNodes[0].nodeValue == "-") {
+        mark.childNodes[0].nodeValue = "+";
+   if (window.event) {
+
+        for (var i = 2; i < e.childNodes.length; i++) {
+            if (e.childNodes[i].nodeName != "#text") {
+                e.childNodes[i].style.display = "none";
+            }
+           }
+    }
+    else {
+       for (var i = 2; i < e.childNodes.length; i++) {
+            if (e.childNodes[i].nodeName != "#text") {
+                e.childNodes[i].style.display = "none";
+            }
+          }
+        }
+    }
+}
+--></script><div class="node" style="border: 1px solid #CCCCCC; background-color: #f8f8f8;"><br><div class="e"><div><span class="b" onclick="doClick(event)">-</span><span class="m">&lt;</span><span class="en">template</span> <span class="an">name</span><span class="m">="</span><span class="av">printCol</span><span class="m">"</span><span class="m">&gt;</span></div><div><div class="e"><span class="t">
+        </span></div><div class="e"><div><span class="b" onclick="doClick(event)">-</span><span class="m">&lt;</span><span class="en">div</span> <span class="an">class</span><span class="m">="</span><span class="av">lpc_fragment</span><span class="m">"</span><span class="m">&gt;</span></div><div><div class="e"><span class="t">
+            </span></div><div class="e"><span class="m">&lt;</span><span class="en">apply-templates</span> <span class="an">mode</span><span class="m">="</span><span class="av">printCol</span><span class="m">"</span> <span class="an">select</span><span class="m">="</span><span class="av">.</span><span class="m">"</span><span class="m">/&gt;</span></div><div class="e"><span class="t">
+        </span></div><div><span class="m">&lt;/</span><span class="en">div</span><span class="m">&gt;</span></div></div></div><div class="e"><span class="t">
+    </span></div><div><span class="m">&lt;/</span><span class="en">template</span><span class="m">&gt;</span></div></div></div><br></div>
+  @endhtmlonly 
+*/
+xslt_libprintcol_template_01( Attribute name="printCol"
+); 
+ 
+
+ /**
+ * Generates tags with embedded css and Javascript.
+ *
+ * Function to ceate <tt>&lt;style&gt;</tt> and <tt>&lt;script&gt;</tt> HTML tags,
+ * as required by HTML fragments build by engine_libprintcol_template_01().
+ * @par Use:
+ *      <tt> &lt;xsl:call-template  name="embeddedHeader" /&gt;</tt>
+ *
+ * @see engine_libprintcol_template_03 for the use of external files.
+   
+
+   @htmlonly 
+           <div class="node" style="border: 1px solid #CCCCCC; background-color: #f8f8f8;"><br><div class="e" xmlns="http://www.w3.org/1999/xhtml"><div><span class="b" onclick="doClick(event)">-</span><span class="m">&lt;</span><span class="en">template</span> <span class="an">name</span><span class="m">="</span><span class="av">embeddedHeader</span><span class="m">"</span><span class="m">&gt;</span></div><div><div class="e"><span class="t">
+            </span></div><div class="e"><span class="m">&lt;</span><span class="en">style</span> <span class="an">type</span><span class="m">="</span><span class="av">text/css</span><span class="m">"</span><span class="m">&gt;</span><span class="t">
+                body  {background-color: white; color: black; }
+                .b  {cursor:pointer; color:red; font-weight:bold; text-decoration:none; padding-right: 2px;}
+                .e  {border: 0px; margin: 0px 0px 0px 2em; text-indent:-1em;}
+                .en {color:#0000FF}
+                .an {color:#C00000}
+                .av {color:#888888}
+                .c  {color:#008800}
+                .t  {color:#008800}
+                .u  {color: #EE82EE}
+                .m  {color:navy}
+                .pi {color:red}
+                pre {margin:0px;}
+                div {border:0; padding:0; margin:0;}
+                .lpc_fragment {font-size:9pt; font-family: Courier, "Courier New", monospace;
+                    }
+
+            </span><span class="m">&lt;/</span><span class="en">style</span><span class="m">&gt;</span></div><div class="e"><span class="t">
+            </span></div><div class="e"><div><span class="b" onclick="doClick(event)">-</span><span class="m">&lt;</span><span class="en">script</span> <span class="an">type</span><span class="m">="</span><span class="av">text/javascript</span><span class="m">"</span><span class="m">&gt;</span></div><div><div class="e"><span class="m">&lt;</span><span class="en">comment</span><span class="m">&gt;</span><span class="t">
+
+function doClick(event) {
+
+    var mark = window.event ?  window.event.srcElement:  event.target;
+
+    while ((mark.className != "b") &amp;&amp; (mark.nodeName != "body")) {
+        mark = mark.parentNode
+    }
+
+    var e = mark;
+    while ((e.className != "e") &amp;&amp; (e.nodeName != "body")) {
+        e = e.parentNode
+    }
+
+    if (mark.childNodes[0].nodeValue == "+") {
+        mark.childNodes[0].nodeValue = "-";
+        for (var i = 1; i &lt; e.childNodes.length; i++) {
+            var name = e.childNodes[i].nodeName;
+            if (name != "#text") {
+                if (name == "pre" || name == "span") {
+                   window.status = "inline";
+                   e.childNodes[i].style.display = "inline";
+                } else {
+                   e.childNodes[i].style.display = "block";
+                }
+            }
+        }
+    } else if (mark.childNodes[0].nodeValue == "-") {
+        mark.childNodes[0].nodeValue = "+";
+   if (window.event) {
+
+        for (var i = 2; i &lt; e.childNodes.length; i++) {
+            if (e.childNodes[i].nodeName != "#text") {
+                e.childNodes[i].style.display = "none";
+            }
+           }
+    }
+    else {
+       for (var i = 2; i &lt; e.childNodes.length; i++) {
+            if (e.childNodes[i].nodeName != "#text") {
+                e.childNodes[i].style.display = "none";
+            }
+          }
+        }
+    }
+}
+</span><span class="m">&lt;/</span><span class="en">comment</span><span class="m">&gt;</span></div><div class="e"><span class="t">
+            </span></div><div><span class="m">&lt;/</span><span class="en">script</span><span class="m">&gt;</span></div></div></div><div class="e"><span class="t">
+   </span></div><div><span class="m">&lt;/</span><span class="en">template</span><span class="m">&gt;</span></div></div></div><br></div>
+  @endhtmlonly 
+*/
+xslt_libprintcol_template_02( Attribute name="embeddedHeader"
+); 
+ 
+
+ /**
+ * Generates tags including local/remote css and Javascript files.
+ *
+ * Function to ceate <tt>&lt;style&gt;</tt> and <tt>&lt;script&gt;</tt> HTML tags in header,
+ * as required by HTML fragments build by engine_libprintcol_template_01().@n
+ *
+ * Includes local or remote files: @n
+ *   - {$baseURL}include/colCode.js
+ *   - {$baseURL}css/colCode.css
+ *
+ * @param name
+ *      the template name, for direct call.
+ * @param baseURL
+ *  - If absent, generates relative URI, using "css/colCode.css" and "include/colCode.js".
+ *  - Local baseURL for included css and Javascript (for IDE)@n
+ *        <tt>file:///c:/o2xdl-30/HTML/</tt> @n
+ *  - Remote baseURL for included css and Javascript (from web)):@n
+ *        <tt>http://www.o2xdl.org/3.0/HTML/</tt>
+ *
+ * @par Use:
+ *    <tt>   &lt;xsl:call-template  name="includedHeader" &gt;@n
+ *        &nbsp;&nbsp; &lt;xsl:with-param name="baseURL"&gt; http://www.o2xdl.org/3.0/HTML/ &lt;/xsl:with-param&gt;
+ *       &lt;/xsl:call-template &gt;@n </tt>
+ *
+ * @see engine_libprintcol_template_02 for standalone HTML.
+ *
+  
+
+   @htmlonly 
+           <div class="node" style="border: 1px solid #CCCCCC; background-color: #f8f8f8;"><br><div class="e" xmlns="http://www.w3.org/1999/xhtml"><div><span class="b" onclick="doClick(event)">-</span><span class="m">&lt;</span><span class="en">template</span> <span class="an">name</span><span class="m">="</span><span class="av">includedHeader</span><span class="m">"</span><span class="m">&gt;</span></div><div><div class="e"><span class="t">
+      </span></div><div class="e"><span class="m">&lt;</span><span class="en">param</span> <span class="an">name</span><span class="m">="</span><span class="av">baseURL</span><span class="m">"</span><span class="m">&gt;</span><span class="t">relative</span><span class="m">&lt;/</span><span class="en">param</span><span class="m">&gt;</span></div><div class="e"><span class="t">
+      </span></div><div class="e"><div><span class="b" onclick="doClick(event)">-</span><span class="m">&lt;</span><span class="en">if</span> <span class="an">test</span><span class="m">="</span><span class="av">$baseURL != 'relative'</span><span class="m">"</span><span class="m">&gt;</span></div><div><div class="e"><span class="t">
+          </span></div><div class="e"><span class="m">&lt;</span><span class="en">base</span> <span class="an">href</span><span class="m">="</span><span class="av">{$baseURL}</span><span class="m">"</span><span class="m">/&gt;</span></div><div class="e"><span class="t">
+      </span></div><div><span class="m">&lt;/</span><span class="en">if</span><span class="m">&gt;</span></div></div></div><div class="e"><span class="t">
+          </span></div><div class="e"><span><span class="b" onclick="doClick(event)">-</span><span class="m">&lt;!--</span></span><div class="c"><pre> uses URL relatives to baseURL (using base tag)</pre><span class="m">--&gt;</span></div></div><div class="e"><span class="t">
+      </span></div><div class="e"><span class="m">&lt;</span><span class="en">link</span> <span class="an">href</span><span class="m">="</span><span class="av">css/colCode.css</span><span class="m">"</span> <span class="an">rel</span><span class="m">="</span><span class="av">StyleSheet</span><span class="m">"</span> <span class="an">type</span><span class="m">="</span><span class="av">text/css</span><span class="m">"</span><span class="m">/&gt;</span></div><div class="e"><span class="t">
+      </span></div><div class="e"><span class="m">&lt;</span><span class="en">script</span> <span class="an">src</span><span class="m">="</span><span class="av">include/colCode.js</span><span class="m">"</span> <span class="an">type</span><span class="m">="</span><span class="av">text/javascript</span><span class="m">"</span><span class="m">/&gt;</span></div><div class="e"><span class="t">
+   </span></div><div><span class="m">&lt;/</span><span class="en">template</span><span class="m">&gt;</span></div></div></div><br></div>
+  @endhtmlonly 
+*/
+xslt_libprintcol_template_03( Attribute name="includedHeader", 
+ Param baseURL = "relative"
+); 
+ 
+
+ /**
+ * Formats processing instructions.
+   
+
+   @htmlonly 
+           <div class="node" style="border: 1px solid #CCCCCC; background-color: #f8f8f8;"><br><div class="e" xmlns="http://www.w3.org/1999/xhtml"><div><span class="b" onclick="doClick(event)">-</span><span class="m">&lt;</span><span class="en">template</span> <span class="an">match</span><span class="m">="</span><span class="av">processing-instruction()</span><span class="m">"</span> <span class="an">mode</span><span class="m">="</span><span class="av">printCol</span><span class="m">"</span><span class="m">&gt;</span></div><div><div class="e"><span class="t">
+        </span></div><div class="e"><div><span class="b" onclick="doClick(event)">-</span><span class="m">&lt;</span><span class="en">div</span> <span class="an">class</span><span class="m">="</span><span class="av">e</span><span class="m">"</span><span class="m">&gt;</span></div><div><div class="e"><span class="t">
+            </span></div><div class="e"><span class="m">&lt;</span><span class="en">span</span> <span class="an">class</span><span class="m">="</span><span class="av">m</span><span class="m">"</span><span class="m">&gt;</span><span class="t">&lt;?</span><span class="m">&lt;/</span><span class="en">span</span><span class="m">&gt;</span></div><div class="e"><span class="t">
+            </span></div><div class="e"><div><span class="b" onclick="doClick(event)">-</span><span class="m">&lt;</span><span class="en">span</span> <span class="an">class</span><span class="m">="</span><span class="av">pi</span><span class="m">"</span><span class="m">&gt;</span></div><div><div class="e"><span class="t">
+                </span></div><div class="e"><span class="m">&lt;</span><span class="en">value-of</span> <span class="an">select</span><span class="m">="</span><span class="av">name(.)</span><span class="m">"</span><span class="m">/&gt;</span></div><div class="e"><span class="t">
+                </span></div><div class="e"><span class="m">&lt;</span><span class="en">text</span><span class="m">&gt;</span><span class="t"> </span><span class="m">&lt;/</span><span class="en">text</span><span class="m">&gt;</span></div><div class="e"><span class="t">
+                </span></div><div class="e"><span class="m">&lt;</span><span class="en">value-of</span> <span class="an">select</span><span class="m">="</span><span class="av">.</span><span class="m">"</span><span class="m">/&gt;</span></div><div class="e"><span class="t">
+            </span></div><div><span class="m">&lt;/</span><span class="en">span</span><span class="m">&gt;</span></div></div></div><div class="e"><span class="t">
+            </span></div><div class="e"><span class="m">&lt;</span><span class="en">span</span> <span class="an">class</span><span class="m">="</span><span class="av">m</span><span class="m">"</span><span class="m">&gt;</span><span class="t">?&gt;</span><span class="m">&lt;/</span><span class="en">span</span><span class="m">&gt;</span></div><div class="e"><span class="t">
+        </span></div><div><span class="m">&lt;/</span><span class="en">div</span><span class="m">&gt;</span></div></div></div><div class="e"><span class="t">
+    </span></div><div><span class="m">&lt;/</span><span class="en">template</span><span class="m">&gt;</span></div></div></div><br></div>
+  @endhtmlonly 
+*/
+xslt_libprintcol_template_04( Attribute match="processing-instruction()", 
+ Attribute mode="printCol"
+); 
+ 
+
+ /**
+ * Formats text nodes.
+  
+
+   @htmlonly 
+           <div class="node" style="border: 1px solid #CCCCCC; background-color: #f8f8f8;"><br><div class="e" xmlns="http://www.w3.org/1999/xhtml"><div><span class="b" onclick="doClick(event)">-</span><span class="m">&lt;</span><span class="en">template</span> <span class="an">match</span><span class="m">="</span><span class="av">text()</span><span class="m">"</span> <span class="an">mode</span><span class="m">="</span><span class="av">printCol</span><span class="m">"</span><span class="m">&gt;</span></div><div><div class="e"><span class="t">
+        </span></div><div class="e"><div><span class="b" onclick="doClick(event)">-</span><span class="m">&lt;</span><span class="en">div</span> <span class="an">class</span><span class="m">="</span><span class="av">e</span><span class="m">"</span><span class="m">&gt;</span></div><div><div class="e"><span class="t">
+            </span></div><div class="e"><div><span class="b" onclick="doClick(event)">-</span><span class="m">&lt;</span><span class="en">span</span> <span class="an">class</span><span class="m">="</span><span class="av">t</span><span class="m">"</span><span class="m">&gt;</span></div><div><div class="e"><span class="t">
+                </span></div><div class="e"><span class="m">&lt;</span><span class="en">value-of</span> <span class="an">select</span><span class="m">="</span><span class="av">.</span><span class="m">"</span><span class="m">/&gt;</span></div><div class="e"><span class="t">
+            </span></div><div><span class="m">&lt;/</span><span class="en">span</span><span class="m">&gt;</span></div></div></div><div class="e"><span class="t">
+        </span></div><div><span class="m">&lt;/</span><span class="en">div</span><span class="m">&gt;</span></div></div></div><div class="e"><span class="t">
+    </span></div><div><span class="m">&lt;/</span><span class="en">template</span><span class="m">&gt;</span></div></div></div><br></div>
+  @endhtmlonly 
+*/
+xslt_libprintcol_template_05( Attribute match="text()", 
+ Attribute mode="printCol"
+); 
+ 
+
+ /**
+ * Formats comment nodes.
+   
+
+   @htmlonly 
+           <div class="node" style="border: 1px solid #CCCCCC; background-color: #f8f8f8;"><br><div class="e" xmlns="http://www.w3.org/1999/xhtml"><div><span class="b" onclick="doClick(event)">-</span><span class="m">&lt;</span><span class="en">template</span> <span class="an">match</span><span class="m">="</span><span class="av">comment()</span><span class="m">"</span> <span class="an">mode</span><span class="m">="</span><span class="av">printCol</span><span class="m">"</span><span class="m">&gt;</span></div><div><div class="e"><span class="t">
+        </span></div><div class="e"><div><span class="b" onclick="doClick(event)">-</span><span class="m">&lt;</span><span class="en">div</span> <span class="an">class</span><span class="m">="</span><span class="av">e</span><span class="m">"</span><span class="m">&gt;</span></div><div><div class="e"><span class="t">
+          </span></div><div class="e"><div><span class="b" onclick="doClick(event)">-</span><span class="m">&lt;</span><span class="en">span</span><span class="m">&gt;</span></div><div><div class="e"><span class="t">
+            </span></div><div class="e"><span class="m">&lt;</span><span class="en">span</span> <span class="an">class</span><span class="m">="</span><span class="av">b</span><span class="m">"</span> <span class="an">onclick</span><span class="m">="</span><span class="av">doClick(event)</span><span class="m">"</span><span class="m">&gt;</span><span class="t">-</span><span class="m">&lt;/</span><span class="en">span</span><span class="m">&gt;</span></div><div class="e"><span class="t">
+            </span></div><div class="e"><span class="m">&lt;</span><span class="en">span</span> <span class="an">class</span><span class="m">="</span><span class="av">m</span><span class="m">"</span><span class="m">&gt;</span><span class="t">&lt;!--</span><span class="m">&lt;/</span><span class="en">span</span><span class="m">&gt;</span></div><div class="e"><span class="t">
+          </span></div><div><span class="m">&lt;/</span><span class="en">span</span><span class="m">&gt;</span></div></div></div><div class="e"><span class="t">
+          </span></div><div class="e"><div><span class="b" onclick="doClick(event)">-</span><span class="m">&lt;</span><span class="en">div</span> <span class="an">class</span><span class="m">="</span><span class="av">c</span><span class="m">"</span><span class="m">&gt;</span></div><div><div class="e"><span class="t">
+                </span></div><div class="e"><div><span class="b" onclick="doClick(event)">-</span><span class="m">&lt;</span><span class="en">pre</span><span class="m">&gt;</span></div><div><div class="e"><span class="m">&lt;</span><span class="en">value-of</span> <span class="an">select</span><span class="m">="</span><span class="av">.</span><span class="m">"</span><span class="m">/&gt;</span></div><div><span class="m">&lt;/</span><span class="en">pre</span><span class="m">&gt;</span></div></div></div><div class="e"><span class="t">
+            </span></div><div class="e"><span class="m">&lt;</span><span class="en">span</span> <span class="an">class</span><span class="m">="</span><span class="av">m</span><span class="m">"</span><span class="m">&gt;</span><span class="t">--&gt;</span><span class="m">&lt;/</span><span class="en">span</span><span class="m">&gt;</span></div><div class="e"><span class="t">
+          </span></div><div><span class="m">&lt;/</span><span class="en">div</span><span class="m">&gt;</span></div></div></div><div class="e"><span class="t">
+
+        </span></div><div><span class="m">&lt;/</span><span class="en">div</span><span class="m">&gt;</span></div></div></div><div class="e"><span class="t">
+    </span></div><div><span class="m">&lt;/</span><span class="en">template</span><span class="m">&gt;</span></div></div></div><br></div>
+  @endhtmlonly 
+*/
+xslt_libprintcol_template_06( Attribute match="comment()", 
+ Attribute mode="printCol"
+); 
+ 
+
+ /**
+ * Formats attributes.
+   
+
+   @htmlonly 
+           <div class="node" style="border: 1px solid #CCCCCC; background-color: #f8f8f8;"><br><div class="e" xmlns="http://www.w3.org/1999/xhtml"><div><span class="b" onclick="doClick(event)">-</span><span class="m">&lt;</span><span class="en">template</span> <span class="an">match</span><span class="m">="</span><span class="av">@*</span><span class="m">"</span> <span class="an">mode</span><span class="m">="</span><span class="av">printCol</span><span class="m">"</span><span class="m">&gt;</span></div><div><div class="e"><span class="t">
+        </span></div><div class="e"><div><span class="b" onclick="doClick(event)">-</span><span class="m">&lt;</span><span class="en">span</span> <span class="an">class</span><span class="m">="</span><span class="av">an</span><span class="m">"</span><span class="m">&gt;</span></div><div><div class="e"><span class="t">
+            </span></div><div class="e"><span class="m">&lt;</span><span class="en">value-of</span> <span class="an">select</span><span class="m">="</span><span class="av">name(.)</span><span class="m">"</span><span class="m">/&gt;</span></div><div class="e"><span class="t">
+        </span></div><div><span class="m">&lt;/</span><span class="en">span</span><span class="m">&gt;</span></div></div></div><div class="e"><span class="t">
+        </span></div><div class="e"><span class="m">&lt;</span><span class="en">span</span> <span class="an">class</span><span class="m">="</span><span class="av">m</span><span class="m">"</span><span class="m">&gt;</span><span class="t">="</span><span class="m">&lt;/</span><span class="en">span</span><span class="m">&gt;</span></div><div class="e"><span class="t">
+        </span></div><div class="e"><div><span class="b" onclick="doClick(event)">-</span><span class="m">&lt;</span><span class="en">span</span> <span class="an">class</span><span class="m">="</span><span class="av">av</span><span class="m">"</span><span class="m">&gt;</span></div><div><div class="e"><span class="t">
+            </span></div><div class="e"><span class="m">&lt;</span><span class="en">value-of</span> <span class="an">select</span><span class="m">="</span><span class="av">.</span><span class="m">"</span><span class="m">/&gt;</span></div><div class="e"><span class="t">
+        </span></div><div><span class="m">&lt;/</span><span class="en">span</span><span class="m">&gt;</span></div></div></div><div class="e"><span class="t">
+        </span></div><div class="e"><span class="m">&lt;</span><span class="en">span</span> <span class="an">class</span><span class="m">="</span><span class="av">m</span><span class="m">"</span><span class="m">&gt;</span><span class="t">"</span><span class="m">&lt;/</span><span class="en">span</span><span class="m">&gt;</span></div><div class="e"><span class="t">
+        </span></div><div class="e"><div><span class="b" onclick="doClick(event)">-</span><span class="m">&lt;</span><span class="en">if</span> <span class="an">test</span><span class="m">="</span><span class="av">position()!=last()</span><span class="m">"</span><span class="m">&gt;</span></div><div><div class="e"><span class="t">
+            </span></div><div class="e"><span class="m">&lt;</span><span class="en">text</span><span class="m">&gt;</span><span class="t"> </span><span class="m">&lt;/</span><span class="en">text</span><span class="m">&gt;</span></div><div class="e"><span class="t">
+        </span></div><div><span class="m">&lt;/</span><span class="en">if</span><span class="m">&gt;</span></div></div></div><div class="e"><span class="t">
+    </span></div><div><span class="m">&lt;/</span><span class="en">template</span><span class="m">&gt;</span></div></div></div><br></div>
+  @endhtmlonly 
+*/
+xslt_libprintcol_template_07( Attribute match="@*", 
+ Attribute mode="printCol"
+); 
+ 
+
+ /**
+ * Formats empty nodes.
+ *
+  
+
+   @htmlonly 
+           <div class="node" style="border: 1px solid #CCCCCC; background-color: #f8f8f8;"><br><div class="e" xmlns="http://www.w3.org/1999/xhtml"><div><span class="b" onclick="doClick(event)">-</span><span class="m">&lt;</span><span class="en">template</span> <span class="an">match</span><span class="m">="</span><span class="av">*[not(node())]</span><span class="m">"</span> <span class="an">mode</span><span class="m">="</span><span class="av">printCol</span><span class="m">"</span><span class="m">&gt;</span></div><div><div class="e"><span class="t">
+        </span></div><div class="e"><div><span class="b" onclick="doClick(event)">-</span><span class="m">&lt;</span><span class="en">div</span> <span class="an">class</span><span class="m">="</span><span class="av">e</span><span class="m">"</span><span class="m">&gt;</span></div><div><div class="e"><span class="t">
+            </span></div><div class="e"><span class="m">&lt;</span><span class="en">span</span> <span class="an">class</span><span class="m">="</span><span class="av">m</span><span class="m">"</span><span class="m">&gt;</span><span class="t">&lt;</span><span class="m">&lt;/</span><span class="en">span</span><span class="m">&gt;</span></div><div class="e"><span class="t">
+            </span></div><div class="e"><div><span class="b" onclick="doClick(event)">-</span><span class="m">&lt;</span><span class="en">span</span> <span class="an">class</span><span class="m">="</span><span class="av">en</span><span class="m">"</span><span class="m">&gt;</span></div><div><div class="e"><span class="t">
+                </span></div><div class="e"><span class="m">&lt;</span><span class="en">value-of</span> <span class="an">select</span><span class="m">="</span><span class="av">name(.)</span><span class="m">"</span><span class="m">/&gt;</span></div><div class="e"><span class="t">
+            </span></div><div><span class="m">&lt;/</span><span class="en">span</span><span class="m">&gt;</span></div></div></div><div class="e"><span class="t">
+            </span></div><div class="e"><div><span class="b" onclick="doClick(event)">-</span><span class="m">&lt;</span><span class="en">if</span> <span class="an">test</span><span class="m">="</span><span class="av">@*</span><span class="m">"</span><span class="m">&gt;</span></div><div><div class="e"><span class="t">
+                </span></div><div class="e"><span class="m">&lt;</span><span class="en">text</span><span class="m">&gt;</span><span class="t"> </span><span class="m">&lt;/</span><span class="en">text</span><span class="m">&gt;</span></div><div class="e"><span class="t">
+            </span></div><div><span class="m">&lt;/</span><span class="en">if</span><span class="m">&gt;</span></div></div></div><div class="e"><span class="t">
+            </span></div><div class="e"><span class="m">&lt;</span><span class="en">apply-templates</span> <span class="an">mode</span><span class="m">="</span><span class="av">printCol</span><span class="m">"</span> <span class="an">select</span><span class="m">="</span><span class="av">@*</span><span class="m">"</span><span class="m">/&gt;</span></div><div class="e"><span class="t">
+            </span></div><div class="e"><span class="m">&lt;</span><span class="en">apply-templates</span> <span class="an">mode</span><span class="m">="</span><span class="av">namespace</span><span class="m">"</span> <span class="an">select</span><span class="m">="</span><span class="av">.</span><span class="m">"</span><span class="m">/&gt;</span></div><div class="e"><span class="t">
+            </span></div><div class="e"><span class="m">&lt;</span><span class="en">span</span> <span class="an">class</span><span class="m">="</span><span class="av">m</span><span class="m">"</span><span class="m">&gt;</span><span class="t">/&gt;</span><span class="m">&lt;/</span><span class="en">span</span><span class="m">&gt;</span></div><div class="e"><span class="t">
+        </span></div><div><span class="m">&lt;/</span><span class="en">div</span><span class="m">&gt;</span></div></div></div><div class="e"><span class="t">
+    </span></div><div><span class="m">&lt;/</span><span class="en">template</span><span class="m">&gt;</span></div></div></div><br></div>
+  @endhtmlonly 
+*/
+xslt_libprintcol_template_08( Attribute match="*[not(node())]", 
+ Attribute mode="printCol"
+); 
+ 
+
+/**
+ * Formats elements with only text(), they are not closeable.
+ *
+   
+
+   @htmlonly 
+           <div class="node" style="border: 1px solid #CCCCCC; background-color: #f8f8f8;"><br><div class="e" xmlns="http://www.w3.org/1999/xhtml"><div><span class="b" onclick="doClick(event)">-</span><span class="m">&lt;</span><span class="en">template</span> <span class="an">match</span><span class="m">="</span><span class="av">*[text() and not(./*)]</span><span class="m">"</span> <span class="an">mode</span><span class="m">="</span><span class="av">printCol</span><span class="m">"</span><span class="m">&gt;</span></div><div><div class="e"><span class="t">
+        </span></div><div class="e"><div><span class="b" onclick="doClick(event)">-</span><span class="m">&lt;</span><span class="en">div</span> <span class="an">class</span><span class="m">="</span><span class="av">e</span><span class="m">"</span><span class="m">&gt;</span></div><div><div class="e"><span class="t">
+            </span></div><div class="e"><span class="m">&lt;</span><span class="en">span</span> <span class="an">class</span><span class="m">="</span><span class="av">m</span><span class="m">"</span><span class="m">&gt;</span><span class="t">&lt;</span><span class="m">&lt;/</span><span class="en">span</span><span class="m">&gt;</span></div><div class="e"><span class="t">
+            </span></div><div class="e"><div><span class="b" onclick="doClick(event)">-</span><span class="m">&lt;</span><span class="en">span</span> <span class="an">class</span><span class="m">="</span><span class="av">en</span><span class="m">"</span><span class="m">&gt;</span></div><div><div class="e"><span class="t">
+                 </span></div><div class="e"><span class="m">&lt;</span><span class="en">value-of</span> <span class="an">select</span><span class="m">="</span><span class="av">name(.)</span><span class="m">"</span><span class="m">/&gt;</span></div><div class="e"><span class="t">
+            </span></div><div><span class="m">&lt;/</span><span class="en">span</span><span class="m">&gt;</span></div></div></div><div class="e"><span class="t">
+            </span></div><div class="e"><div><span class="b" onclick="doClick(event)">-</span><span class="m">&lt;</span><span class="en">if</span> <span class="an">test</span><span class="m">="</span><span class="av">@*</span><span class="m">"</span><span class="m">&gt;</span></div><div><div class="e"><span class="t">
+                </span></div><div class="e"><span class="m">&lt;</span><span class="en">text</span><span class="m">&gt;</span><span class="t"> </span><span class="m">&lt;/</span><span class="en">text</span><span class="m">&gt;</span></div><div class="e"><span class="t">
+            </span></div><div><span class="m">&lt;/</span><span class="en">if</span><span class="m">&gt;</span></div></div></div><div class="e"><span class="t">
+            </span></div><div class="e"><span class="m">&lt;</span><span class="en">apply-templates</span> <span class="an">mode</span><span class="m">="</span><span class="av">printCol</span><span class="m">"</span> <span class="an">select</span><span class="m">="</span><span class="av">@*</span><span class="m">"</span><span class="m">/&gt;</span></div><div class="e"><span class="t">
+            </span></div><div class="e"><span class="m">&lt;</span><span class="en">apply-templates</span> <span class="an">mode</span><span class="m">="</span><span class="av">namespace</span><span class="m">"</span> <span class="an">select</span><span class="m">="</span><span class="av">.</span><span class="m">"</span><span class="m">/&gt;</span></div><div class="e"><span class="t">
+            </span></div><div class="e"><div><span class="b" onclick="doClick(event)">-</span><span class="m">&lt;</span><span class="en">span</span> <span class="an">class</span><span class="m">="</span><span class="av">m</span><span class="m">"</span><span class="m">&gt;</span></div><div><div class="e"><span class="t">
+                </span></div><div class="e"><span class="m">&lt;</span><span class="en">text</span><span class="m">&gt;</span><span class="t">&gt;</span><span class="m">&lt;/</span><span class="en">text</span><span class="m">&gt;</span></div><div class="e"><span class="t">
+            </span></div><div><span class="m">&lt;/</span><span class="en">span</span><span class="m">&gt;</span></div></div></div><div class="e"><span class="t">
+            </span></div><div class="e"><div><span class="b" onclick="doClick(event)">-</span><span class="m">&lt;</span><span class="en">span</span> <span class="an">class</span><span class="m">="</span><span class="av">t</span><span class="m">"</span><span class="m">&gt;</span></div><div><div class="e"><span class="t">
+                </span></div><div class="e"><span class="m">&lt;</span><span class="en">value-of</span> <span class="an">select</span><span class="m">="</span><span class="av">.</span><span class="m">"</span><span class="m">/&gt;</span></div><div class="e"><span class="t">
+            </span></div><div><span class="m">&lt;/</span><span class="en">span</span><span class="m">&gt;</span></div></div></div><div class="e"><span class="t">
+            </span></div><div class="e"><span class="m">&lt;</span><span class="en">span</span> <span class="an">class</span><span class="m">="</span><span class="av">m</span><span class="m">"</span><span class="m">&gt;</span><span class="t">&lt;/</span><span class="m">&lt;/</span><span class="en">span</span><span class="m">&gt;</span></div><div class="e"><span class="t">
+            </span></div><div class="e"><div><span class="b" onclick="doClick(event)">-</span><span class="m">&lt;</span><span class="en">span</span> <span class="an">class</span><span class="m">="</span><span class="av">en</span><span class="m">"</span><span class="m">&gt;</span></div><div><div class="e"><span class="t">
+                </span></div><div class="e"><span class="m">&lt;</span><span class="en">value-of</span> <span class="an">select</span><span class="m">="</span><span class="av">name(.)</span><span class="m">"</span><span class="m">/&gt;</span></div><div class="e"><span class="t">
+            </span></div><div><span class="m">&lt;/</span><span class="en">span</span><span class="m">&gt;</span></div></div></div><div class="e"><span class="t">
+            </span></div><div class="e"><div><span class="b" onclick="doClick(event)">-</span><span class="m">&lt;</span><span class="en">span</span> <span class="an">class</span><span class="m">="</span><span class="av">m</span><span class="m">"</span><span class="m">&gt;</span></div><div><div class="e"><span class="t">
+                </span></div><div class="e"><span class="m">&lt;</span><span class="en">text</span><span class="m">&gt;</span><span class="t">&gt;</span><span class="m">&lt;/</span><span class="en">text</span><span class="m">&gt;</span></div><div class="e"><span class="t">
+            </span></div><div><span class="m">&lt;/</span><span class="en">span</span><span class="m">&gt;</span></div></div></div><div class="e"><span class="t">
+        </span></div><div><span class="m">&lt;/</span><span class="en">div</span><span class="m">&gt;</span></div></div></div><div class="e"><span class="t">
+    </span></div><div><span class="m">&lt;/</span><span class="en">template</span><span class="m">&gt;</span></div></div></div><br></div>
+  @endhtmlonly 
+*/
+xslt_libprintcol_template_09( Attribute match="*[text() and not(./*)]", 
+ Attribute mode="printCol"
+); 
+ 
+
+ /**
+ * Formats not empty nodes.
+ *
+   
+
+   @htmlonly 
+           <div class="node" style="border: 1px solid #CCCCCC; background-color: #f8f8f8;"><br><div class="e" xmlns="http://www.w3.org/1999/xhtml"><div><span class="b" onclick="doClick(event)">-</span><span class="m">&lt;</span><span class="en">template</span> <span class="an">match</span><span class="m">="</span><span class="av">*[*]</span><span class="m">"</span> <span class="an">mode</span><span class="m">="</span><span class="av">printCol</span><span class="m">"</span><span class="m">&gt;</span></div><div><div class="e"><span class="t">
+        </span></div><div class="e"><div><span class="b" onclick="doClick(event)">-</span><span class="m">&lt;</span><span class="en">div</span> <span class="an">class</span><span class="m">="</span><span class="av">e</span><span class="m">"</span><span class="m">&gt;</span></div><div><div class="e"><span class="t">
+            </span></div><div class="e"><div><span class="b" onclick="doClick(event)">-</span><span class="m">&lt;</span><span class="en">div</span><span class="m">&gt;</span></div><div><div class="e"><span class="t">
+                </span></div><div class="e"><span class="m">&lt;</span><span class="en">span</span> <span class="an">class</span><span class="m">="</span><span class="av">b</span><span class="m">"</span> <span class="an">onclick</span><span class="m">="</span><span class="av">doClick(event)</span><span class="m">"</span><span class="m">&gt;</span><span class="t">-</span><span class="m">&lt;/</span><span class="en">span</span><span class="m">&gt;</span></div><div class="e"><span class="t">
+                </span></div><div class="e"><span class="m">&lt;</span><span class="en">span</span> <span class="an">class</span><span class="m">="</span><span class="av">m</span><span class="m">"</span><span class="m">&gt;</span><span class="t">&lt;</span><span class="m">&lt;/</span><span class="en">span</span><span class="m">&gt;</span></div><div class="e"><span class="t">
+                </span></div><div class="e"><div><span class="b" onclick="doClick(event)">-</span><span class="m">&lt;</span><span class="en">span</span> <span class="an">class</span><span class="m">="</span><span class="av">en</span><span class="m">"</span><span class="m">&gt;</span></div><div><div class="e"><span class="t">
+                     </span></div><div class="e"><span class="m">&lt;</span><span class="en">value-of</span> <span class="an">select</span><span class="m">="</span><span class="av">name(.)</span><span class="m">"</span><span class="m">/&gt;</span></div><div class="e"><span class="t">
+                </span></div><div><span class="m">&lt;/</span><span class="en">span</span><span class="m">&gt;</span></div></div></div><div class="e"><span class="t">
+                </span></div><div class="e"><div><span class="b" onclick="doClick(event)">-</span><span class="m">&lt;</span><span class="en">if</span> <span class="an">test</span><span class="m">="</span><span class="av">@*</span><span class="m">"</span><span class="m">&gt;</span></div><div><div class="e"><span class="t">
+                    </span></div><div class="e"><span class="m">&lt;</span><span class="en">text</span><span class="m">&gt;</span><span class="t"> </span><span class="m">&lt;/</span><span class="en">text</span><span class="m">&gt;</span></div><div class="e"><span class="t">
+                </span></div><div><span class="m">&lt;/</span><span class="en">if</span><span class="m">&gt;</span></div></div></div><div class="e"><span class="t">
+                </span></div><div class="e"><span class="m">&lt;</span><span class="en">apply-templates</span> <span class="an">mode</span><span class="m">="</span><span class="av">printCol</span><span class="m">"</span> <span class="an">select</span><span class="m">="</span><span class="av">@*</span><span class="m">"</span><span class="m">/&gt;</span></div><div class="e"><span class="t">
+                </span></div><div class="e"><span class="m">&lt;</span><span class="en">apply-templates</span> <span class="an">mode</span><span class="m">="</span><span class="av">namespace</span><span class="m">"</span> <span class="an">select</span><span class="m">="</span><span class="av">.</span><span class="m">"</span><span class="m">/&gt;</span></div><div class="e"><span class="t">
+                </span></div><div class="e"><div><span class="b" onclick="doClick(event)">-</span><span class="m">&lt;</span><span class="en">span</span> <span class="an">class</span><span class="m">="</span><span class="av">m</span><span class="m">"</span><span class="m">&gt;</span></div><div><div class="e"><span class="t">
+                    </span></div><div class="e"><span class="m">&lt;</span><span class="en">text</span><span class="m">&gt;</span><span class="t">&gt;</span><span class="m">&lt;/</span><span class="en">text</span><span class="m">&gt;</span></div><div class="e"><span class="t">
+                </span></div><div><span class="m">&lt;/</span><span class="en">span</span><span class="m">&gt;</span></div></div></div><div class="e"><span class="t">
+            </span></div><div><span class="m">&lt;/</span><span class="en">div</span><span class="m">&gt;</span></div></div></div><div class="e"><span class="t">
+            </span></div><div class="e"><div><span class="b" onclick="doClick(event)">-</span><span class="m">&lt;</span><span class="en">div</span><span class="m">&gt;</span></div><div><div class="e"><span class="t">
+            </span></div><div class="e"><span><span class="b" onclick="doClick(event)">-</span><span class="m">&lt;!--</span></span><div class="c"><pre> children nodes processing </pre><span class="m">--&gt;</span></div></div><div class="e"><span class="t">
+                </span></div><div class="e"><span class="m">&lt;</span><span class="en">apply-templates</span> <span class="an">mode</span><span class="m">="</span><span class="av">printCol</span><span class="m">"</span><span class="m">/&gt;</span></div><div class="e"><span class="t">
+                </span></div><div class="e"><div><span class="b" onclick="doClick(event)">-</span><span class="m">&lt;</span><span class="en">div</span><span class="m">&gt;</span></div><div><div class="e"><span class="t">
+                    </span></div><div class="e"><span class="m">&lt;</span><span class="en">span</span> <span class="an">class</span><span class="m">="</span><span class="av">m</span><span class="m">"</span><span class="m">&gt;</span><span class="t">&lt;/</span><span class="m">&lt;/</span><span class="en">span</span><span class="m">&gt;</span></div><div class="e"><span class="t">
+                    </span></div><div class="e"><div><span class="b" onclick="doClick(event)">-</span><span class="m">&lt;</span><span class="en">span</span> <span class="an">class</span><span class="m">="</span><span class="av">en</span><span class="m">"</span><span class="m">&gt;</span></div><div><div class="e"><span class="t">
+                        </span></div><div class="e"><span class="m">&lt;</span><span class="en">value-of</span> <span class="an">select</span><span class="m">="</span><span class="av">name(.)</span><span class="m">"</span><span class="m">/&gt;</span></div><div class="e"><span class="t">
+                    </span></div><div><span class="m">&lt;/</span><span class="en">span</span><span class="m">&gt;</span></div></div></div><div class="e"><span class="t">
+                    </span></div><div class="e"><div><span class="b" onclick="doClick(event)">-</span><span class="m">&lt;</span><span class="en">span</span> <span class="an">class</span><span class="m">="</span><span class="av">m</span><span class="m">"</span><span class="m">&gt;</span></div><div><div class="e"><span class="t">
+                        </span></div><div class="e"><span class="m">&lt;</span><span class="en">text</span><span class="m">&gt;</span><span class="t">&gt;</span><span class="m">&lt;/</span><span class="en">text</span><span class="m">&gt;</span></div><div class="e"><span class="t">
+                    </span></div><div><span class="m">&lt;/</span><span class="en">span</span><span class="m">&gt;</span></div></div></div><div class="e"><span class="t">
+                </span></div><div><span class="m">&lt;/</span><span class="en">div</span><span class="m">&gt;</span></div></div></div><div class="e"><span class="t">
+            </span></div><div><span class="m">&lt;/</span><span class="en">div</span><span class="m">&gt;</span></div></div></div><div class="e"><span class="t">
+        </span></div><div><span class="m">&lt;/</span><span class="en">div</span><span class="m">&gt;</span></div></div></div><div class="e"><span class="t">
+    </span></div><div><span class="m">&lt;/</span><span class="en">template</span><span class="m">&gt;</span></div></div></div><br></div>
+  @endhtmlonly 
+*/
+xslt_libprintcol_template_10( Attribute match="*[*]", 
+ Attribute mode="printCol"
+); 
+ 
+
+ /**
+ * Formats namespaces.
+ *
+   
+
+   @htmlonly 
+           <div class="node" style="border: 1px solid #CCCCCC; background-color: #f8f8f8;"><br><div class="e" xmlns="http://www.w3.org/1999/xhtml"><div><span class="b" onclick="doClick(event)">-</span><span class="m">&lt;</span><span class="en">template</span> <span class="an">match</span><span class="m">="</span><span class="av">*</span><span class="m">"</span> <span class="an">mode</span><span class="m">="</span><span class="av">namespace</span><span class="m">"</span><span class="m">&gt;</span></div><div><div class="e"><span class="t">
+        </span></div><div class="e"><span class="m">&lt;</span><span class="en">variable</span> <span class="an">name</span><span class="m">="</span><span class="av">context</span><span class="m">"</span> <span class="an">select</span><span class="m">="</span><span class="av">.</span><span class="m">"</span><span class="m">/&gt;</span></div><div class="e"><span class="t">
+        </span></div><div class="e"><div><span class="b" onclick="doClick(event)">-</span><span class="m">&lt;</span><span class="en">for-each</span> <span class="an">select</span><span class="m">="</span><span class="av">namespace::node()</span><span class="m">"</span><span class="m">&gt;</span></div><div><div class="e"><span class="t">
+            </span></div><div class="e"><span class="m">&lt;</span><span class="en">variable</span> <span class="an">name</span><span class="m">="</span><span class="av">nsuri</span><span class="m">"</span> <span class="an">select</span><span class="m">="</span><span class="av">.</span><span class="m">"</span><span class="m">/&gt;</span></div><div class="e"><span class="t">
+            </span></div><div class="e"><span class="m">&lt;</span><span class="en">variable</span> <span class="an">name</span><span class="m">="</span><span class="av">nsprefix</span><span class="m">"</span> <span class="an">select</span><span class="m">="</span><span class="av">name()</span><span class="m">"</span><span class="m">/&gt;</span></div><div class="e"><span class="t">
+            </span></div><div class="e"><div><span class="b" onclick="doClick(event)">-</span><span class="m">&lt;</span><span class="en">choose</span><span class="m">&gt;</span></div><div><div class="e"><span class="t">
+                </span></div><div class="e"><span class="m">&lt;</span><span class="en">when</span> <span class="an">test</span><span class="m">="</span><span class="av">$nsprefix = 'xml'</span><span class="m">"</span><span class="m">&gt;</span><span class="t">
+                     
+                </span><span class="m">&lt;/</span><span class="en">when</span><span class="m">&gt;</span></div><div class="e"><span class="t">
+                </span></div><div class="e"><span class="m">&lt;</span><span class="en">when</span> <span class="an">test</span><span class="m">="</span><span class="av">$context/../namespace::node()[name() = $nsprefix and . = $nsuri]</span><span class="m">"</span><span class="m">&gt;</span><span class="t">
+                    
+                </span><span class="m">&lt;/</span><span class="en">when</span><span class="m">&gt;</span></div><div class="e"><span class="t">
+                </span></div><div class="e"><div><span class="b" onclick="doClick(event)">-</span><span class="m">&lt;</span><span class="en">otherwise</span><span class="m">&gt;</span></div><div><div class="e"><span class="t">
+                    </span></div><div class="e"><span class="m">&lt;</span><span class="en">text</span><span class="m">&gt;</span><span class="t"> </span><span class="m">&lt;/</span><span class="en">text</span><span class="m">&gt;</span></div><div class="e"><span class="t">
+                    </span></div><div class="e"><div><span class="b" onclick="doClick(event)">-</span><span class="m">&lt;</span><span class="en">span</span> <span class="an">class</span><span class="m">="</span><span class="av">an</span><span class="m">"</span><span class="m">&gt;</span></div><div><div class="e"><span class="t">
+                        </span></div><div class="e"><span class="m">&lt;</span><span class="en">text</span><span class="m">&gt;</span><span class="t">xmlns</span><span class="m">&lt;/</span><span class="en">text</span><span class="m">&gt;</span></div><div class="e"><span class="t">
+                        </span></div><div class="e"><div><span class="b" onclick="doClick(event)">-</span><span class="m">&lt;</span><span class="en">if</span> <span class="an">test</span><span class="m">="</span><span class="av">$nsprefix</span><span class="m">"</span><span class="m">&gt;</span></div><div><div class="e"><span class="t">
+                            </span></div><div class="e"><span class="m">&lt;</span><span class="en">text</span><span class="m">&gt;</span><span class="t">:</span><span class="m">&lt;/</span><span class="en">text</span><span class="m">&gt;</span></div><div class="e"><span class="t">
+                            </span></div><div class="e"><span class="m">&lt;</span><span class="en">value-of</span> <span class="an">select</span><span class="m">="</span><span class="av">$nsprefix</span><span class="m">"</span><span class="m">/&gt;</span></div><div class="e"><span class="t">
+                        </span></div><div><span class="m">&lt;/</span><span class="en">if</span><span class="m">&gt;</span></div></div></div><div class="e"><span class="t">
+                    </span></div><div><span class="m">&lt;/</span><span class="en">span</span><span class="m">&gt;</span></div></div></div><div class="e"><span class="t">
+                    </span></div><div class="e"><span class="m">&lt;</span><span class="en">span</span> <span class="an">class</span><span class="m">="</span><span class="av">m</span><span class="m">"</span><span class="m">&gt;</span><span class="t">="</span><span class="m">&lt;/</span><span class="en">span</span><span class="m">&gt;</span></div><div class="e"><span class="t">
+                    </span></div><div class="e"><div><span class="b" onclick="doClick(event)">-</span><span class="m">&lt;</span><span class="en">span</span> <span class="an">class</span><span class="m">="</span><span class="av">av</span><span class="m">"</span><span class="m">&gt;</span></div><div><div class="e"><span class="t">
+                        </span></div><div class="e"><span class="m">&lt;</span><span class="en">value-of</span> <span class="an">select</span><span class="m">="</span><span class="av">.</span><span class="m">"</span><span class="m">/&gt;</span></div><div class="e"><span class="t">
+                    </span></div><div><span class="m">&lt;/</span><span class="en">span</span><span class="m">&gt;</span></div></div></div><div class="e"><span class="t">
+                    </span></div><div class="e"><span class="m">&lt;</span><span class="en">span</span> <span class="an">class</span><span class="m">="</span><span class="av">m</span><span class="m">"</span><span class="m">&gt;</span><span class="t">"</span><span class="m">&lt;/</span><span class="en">span</span><span class="m">&gt;</span></div><div class="e"><span class="t">
+                </span></div><div><span class="m">&lt;/</span><span class="en">otherwise</span><span class="m">&gt;</span></div></div></div><div class="e"><span class="t">
+            </span></div><div><span class="m">&lt;/</span><span class="en">choose</span><span class="m">&gt;</span></div></div></div><div class="e"><span class="t">
+        </span></div><div><span class="m">&lt;/</span><span class="en">for-each</span><span class="m">&gt;</span></div></div></div><div class="e"><span class="t">
+    </span></div><div><span class="m">&lt;/</span><span class="en">template</span><span class="m">&gt;</span></div></div></div><br></div>
+  @endhtmlonly 
+*/
+xslt_libprintcol_template_11( Attribute match="*", 
+ Attribute mode="namespace"
+); 
+ 
+
+ /**
+ * This catchs errors.
+   
+
+   @htmlonly 
+           <div class="node" style="border: 1px solid #CCCCCC; background-color: #f8f8f8;"><br><div class="e" xmlns="http://www.w3.org/1999/xhtml"><div><span class="b" onclick="doClick(event)">-</span><span class="m">&lt;</span><span class="en">template</span> <span class="an">match</span><span class="m">="</span><span class="av">*</span><span class="m">"</span> <span class="an">mode</span><span class="m">="</span><span class="av">printCol</span><span class="m">"</span><span class="m">&gt;</span></div><div><div class="e"><span class="t">
+          </span></div><div class="e"><div><span class="b" onclick="doClick(event)">-</span><span class="m">&lt;</span><span class="en">comment</span><span class="m">&gt;</span></div><div><div class="e"><span class="t"> using ERROR template for </span></div><div class="e"><span class="m">&lt;</span><span class="en">value-of</span> <span class="an">select</span><span class="m">="</span><span class="av">name(.)</span><span class="m">"</span><span class="m">/&gt;</span></div><div class="e"><span class="t">=</span></div><div class="e"><span class="m">&lt;</span><span class="en">value-of</span> <span class="an">select</span><span class="m">="</span><span class="av">.</span><span class="m">"</span><span class="m">/&gt;</span></div><div><span class="m">&lt;/</span><span class="en">comment</span><span class="m">&gt;</span></div></div></div><div class="e"><span class="t">
+
+   </span></div><div><span class="m">&lt;/</span><span class="en">template</span><span class="m">&gt;</span></div></div></div><br></div>
+  @endhtmlonly 
+*/
+xslt_libprintcol_template_12( Attribute match="*", 
+ Attribute mode="printCol"
+); 
+ 
+
+/**@}*/
+

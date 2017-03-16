@@ -1,0 +1,67 @@
+#sh2dox regex rules, requires block mode (-b)
+# Transforms a sheel-script file (.sh) in a c-like file that can be
+# processed by Doxygen.
+# Requires one or more functions and in last line (main) a call to a function. 
+# Comments blocs in javastyle ("#"+"/** ", or "#" +"/") also multiline, before functions and main
+# This file must be used with regexfilter in shell or using a custom driver (see SHdoxFilter.sh)
+#Sun Sep 06 12:40:09 CEST 2009
+
+# This will force block mode (same as "-b" on command line)
+_CL_OPTION_b=true
+
+# rule 1, global main format like c function ()
+# requires one or more functions and in last line (main) a call to a function. 
+regex1=(?sm)\\A((?:[^{]*\\{[^}]*\\}\\s*$)*)\\s*((?:#.*$.)*).*^\\s*(\\S*)\\s(\\p{Print}*)$.*\\Z
+replacement1= $1  \n$2 \ncall_using ( \\$1 ... ) {\n $3  $4 \n}\n
+#replacement1= $1  \n$2 \n$3  $4 \n
+
+# rule 2, #!/  becomes //
+regex2=#!/
+replacement2=//
+
+# rule 3, #*  becomes *
+regex3=(?m)^#[ ]*\\*
+replacement3=*
+
+# rule 4, #/** becomes /**
+regex4=(?m)^#[ ]*/\\*\\*
+replacement4=/**
+
+# rule 5, ### becomes /// 
+regex5=(?m)^###([^#].*)$
+replacement5=/// $1
+
+# rule 6, ## becomes /// 
+regex6=(?m)^##([^#].*)$
+replacement6=/// $1
+
+# rule 7, # becomes // 
+regex7=#
+replacement7=//
+
+# rule 8, $ becomes ;$
+# regex8=(?m)^([^/\\*].*[^\\{/])$
+# replacement8=$1;
+
+# limit the effects of rule 8
+
+# rule 9, then; becomes then
+# regex9=then;
+# replacement9=then
+
+# rule 10, fi; becomes fi
+# regex10=fi;
+# replacement10=fi
+
+# rule 13, else; becomes else
+# regex13=else;
+# replacement13=else
+
+# rule 11, if[]; becomes if[]
+# regex11=if(\[.*\]);
+# replacement11=if$1
+
+# rule 12, esac; becomes esac
+# regex12=esac;
+# replacement12=esac
+

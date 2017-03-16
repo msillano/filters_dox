@@ -1,0 +1,52 @@
+#bat2dox regex rules, requires block mode (-b)
+# Transforms a sheel-script file (.bat) in a c-like file that can be
+# processed by Doxygen.
+# Requires one or more functions and in last line (main) a call to a function. 
+# Comments blocs in javastyle ("rem"+"/** ", or "::" +"/") also multiline, before functions and main
+# This file must be used with regexfilter in shell or using a custom driver (see ShelldoxFilter.bat)
+#Sun Sep 06 12:40:09 CEST 2009
+
+# This will force block mode (same as "-b" on command line)
+_CL_OPTION_b=true
+
+# rule 1, ::/**  becomes /**
+regex1=::[ ]*/\\*\\*
+replacement1=/**
+
+# rule 2, ::*/  becomes */
+regex2=::[ ]*\\*/
+replacement2=*/
+
+# rule 3, ::* becomes ""
+regex3=::([ ]*)\\*
+replacement3=$1
+
+# rule 4, :: + xxx becomes ""
+regex4=(?im)^[ ]*::([ ]*).*$
+replacement4=$1
+
+# rule 5, rem/**  becomes /**
+regex5=(?i)rem[ ]*/\\*\\*
+replacement5=/**
+
+# rule 6, rem*/  becomes */
+regex6=(?i)rem[ ]*\\*/
+replacement6=*/
+
+# rule 7, rem*  becomes ""
+regex7=(?i)rem([ ]*)\\*
+replacement7=$1
+
+# rule 8, rem +xxx becomes ""
+regex8=(?im)^[ ]*rem([ ]*).*$
+replacement8=$1
+
+
+# rule 9, for test, all the BAT code
+#regex7=(?m)\\A((?:[ ]*[\\*/].*[\\n\\f\\r]+)*)((?:[ ]*[^\\*/].*[\\n\\f\\r]+)*)(.*)\\Z
+#replacement7= $1 /**@{*/ ; main(%1...){ /* \n$2$3 \n*/ } /**@}*/
+#replacement7= primo "$1" secondo "$2" terzo "$3"
+ 
+# rule 9, all the BAT code
+regex9=(?sm)\\A[^\\*]*(/\\*\\*.*?\\*/)([^\\*]*)(/\\*\\*.*?\\*/)[\\n\\f\\r]*(.*)\\Z
+replacement9 \n dummy;\n$2 $1 $2 $3 $2public call_using (%1) \n{ /* $4*/}; 

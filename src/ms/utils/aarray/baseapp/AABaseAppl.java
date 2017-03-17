@@ -671,8 +671,7 @@ public class AABaseAppl extends AArray {
 		// store object - String
 		String test = "";
 		for (int i = 0; i < args.length; i++) {
-			test += (args[i].indexOf(' ') == -1 ? args[i] : "\"" + args[i]
-					+ "\"")
+		      test += (args[i].indexOf(' ') == -1 ? args[i] : "\"" + args[i] + "\"")
 					+ " ";
 		}
 		x.setObject(test, "commandLine");
@@ -681,9 +680,8 @@ public class AABaseAppl extends AArray {
 		x.setObject(n, "aDouble");
 		// load object String
 		String s1 = x.getObject(String.class, "commandLine");
-		System.out
-				.println("*** Store/Read Object: String - Command line is \n*** "
-						+ s1);
+		System.out.println("*** Store/Read Object: String - Command line is \n*** "
+			        + s1);
 		// load object Double
 		Double d1 = x.getObject(Double.class, "aDouble");
 		System.out.println("*** Store/Read Object: Double is \n***" + d1);
@@ -702,12 +700,10 @@ public class AABaseAppl extends AArray {
 		x.saveConfigFile("configFile.txt", MODE_TXT, "Test file");
 		x.saveConfigFile("configFile.xml", MODE_XML, "Test XML");
 		x.saveConfigFile("configFile.ini", MODE_INI, "Test INI");
-		System.out
-				.println("*** Saved configFile.txt, configFile.ini and configFile.xml");
+		System.out.println("*** Saved configFile.txt, configFile.ini and configFile.xml");
 		// test cleanAllSpecial
 		x.cleanAllSpecial(true, true);
-		System.out
-				.println("*** After cleanAllSpecial(true, true) AArray content is:");
+		System.out.println("*** After cleanAllSpecial(true, true) AArray content is:");
 		// --- deprecated, used only here for dump on screen
 		x.list(System.out);
 		x.loadConfigFile("configFile.xml", MODE_XML);

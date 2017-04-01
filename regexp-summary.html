@@ -1,0 +1,580 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"><head>
+<!-- saved from url=(0087)file:///D:/User/Documents/progetti2015/filters_dox/doc-code/html/regexfilter_8java.html -->
+
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" /><title>Doxygen filters: src/ms/utils/aarray/baseapp/filter/regexfilter.java File Reference</title>
+
+
+<link href="./reg-exp_files/tabs.css" rel="stylesheet" type="text/css" />
+<link href="./reg-exp_files/doxygen.css" rel="stylesheet" type="text/css" /></head><body>
+<div class="contents"><dl class="user"><dt><br />
+</dt></dl>
+<h1><b>Summary of regular-expression constructs</b></h1>
+(from JDK 6 documentation)  <table summary="Regular
+           expression constructs, and what they match" border="0" cellpadding="1" cellspacing="0">
+ 
+ <tbody><tr align="left">
+ <th id="construct" align="left" bgcolor="#ccccff">Construct</th>
+ <th id="matches" align="left" bgcolor="#ccccff">Matches</th>
+ </tr>
+ 
+ <tr>
+ <th>&nbsp;</th>
+ </tr>
+ <tr align="left">
+ <th colspan="2" id="characters">Characters</th>
+ </tr>
+ 
+ <tr>
+ <td headers="construct characters" valign="top"><i>x</i></td>
+ <td headers="matches">The character <i>x</i></td>
+ </tr>
+ <tr>
+ <td headers="construct characters" valign="top"><tt>\\</tt></td>
+ <td headers="matches">The backslash character</td>
+ </tr>
+ <tr>
+ <td headers="construct characters" valign="top"><tt>\0</tt><i>n</i></td>
+ 
+ <td headers="matches">The character with octal value <tt>0</tt><i>n</i>
+ (0&nbsp;<tt>&lt;=</tt>&nbsp;<i>n</i>&nbsp;<tt>&lt;=</tt>&nbsp;7)</td>
+ </tr>
+ <tr>
+ <td headers="construct characters" valign="top"><tt>\0</tt><i>nn</i></td>
+ <td headers="matches">The character with octal value <tt>0</tt><i>nn</i>
+ 
+ (0&nbsp;<tt>&lt;=</tt>&nbsp;<i>n</i>&nbsp;<tt>&lt;=</tt>&nbsp;7)</td>
+ </tr>
+ <tr>
+ <td headers="construct characters" valign="top"><tt>\0</tt><i>mnn</i></td>
+ <td headers="matches">The character with octal value <tt>0</tt><i>mnn</i>
+ (0&nbsp;<tt>&lt;=</tt>&nbsp;<i>m</i>&nbsp;<tt>&lt;=</tt>&nbsp;3,
+ 0&nbsp;<tt>&lt;=</tt>&nbsp;<i>n</i>&nbsp;<tt>&lt;=</tt>&nbsp;7)</td>
+ </tr>
+ 
+ <tr>
+ <td headers="construct characters" valign="top"><tt>\x</tt><i>hh</i></td>
+ <td headers="matches">The character with hexadecimal&nbsp;value&nbsp;<tt>0x</tt><i>hh</i></td>
+ </tr>
+ <tr>
+ <td headers="construct characters" valign="top"><tt>\u</tt><i>hhhh</i></td>
+ <td headers="matches">The character with hexadecimal&nbsp;value&nbsp;<tt>0x</tt><i>hhhh</i></td>
+ </tr>
+ 
+ <tr>
+ <td headers="matches" valign="top"><tt>\t</tt></td>
+ <td headers="matches">The tab character (<tt>'\u0009'</tt>)</td>
+ </tr>
+ <tr>
+ <td headers="construct characters" valign="top"><tt>\n</tt></td>
+ <td headers="matches">The newline (line feed) character (<tt>'\u000A'</tt>)</td>
+ </tr>
+ 
+ <tr>
+ <td headers="construct characters" valign="top"><tt>\r</tt></td>
+ <td headers="matches">The carriage-return character (<tt>'\u000D'</tt>)</td>
+ </tr>
+ <tr>
+ <td headers="construct characters" valign="top"><tt>\f</tt></td>
+ <td headers="matches">The form-feed character (<tt>'\u000C'</tt>)</td>
+ </tr>
+ 
+ <tr>
+ <td headers="construct characters" valign="top"><tt>\a</tt></td>
+ <td headers="matches">The alert (bell) character (<tt>'\u0007'</tt>)</td>
+ </tr>
+ <tr>
+ <td headers="construct characters" valign="top"><tt>\e</tt></td>
+ <td headers="matches">The escape character (<tt>'\u001B'</tt>)</td>
+ </tr>
+ 
+ <tr>
+ <td headers="construct characters" valign="top"><tt>\c</tt><i>x</i></td>
+ <td headers="matches">The control character corresponding to <i>x</i></td>
+ </tr>
+ 
+ <tr>
+ <th>&nbsp;</th>
+ </tr>
+ <tr align="left">
+ <th colspan="2" id="classes">Character classes</th>
+ </tr>
+ 
+ <tr>
+ <td headers="construct classes" valign="top"><tt>[abc]</tt></td>
+ 
+ <td headers="matches"><tt>a</tt>, <tt>b</tt>, or <tt>c</tt> (simple
+ class)</td>
+ </tr>
+ <tr>
+ <td headers="construct classes" valign="top"><tt>[^abc]</tt></td>
+ <td headers="matches">Any character except <tt>a</tt>, <tt>b</tt>, or
+ <tt>c</tt> (negation)</td>
+ </tr>
+ 
+ <tr>
+ <td headers="construct classes" valign="top"><tt>[a-zA-Z]</tt></td>
+ <td headers="matches"><tt>a</tt> through <tt>z</tt> or <tt>A</tt>
+ through <tt>Z</tt>, inclusive (range)</td>
+ </tr>
+ 
+ <tr>
+ <td headers="construct classes" valign="top"><tt>[a-d[m-p]]</tt></td>
+ <td headers="matches"><tt>a</tt> through <tt>d</tt>, or <tt>m</tt>
+ through <tt>p</tt>: <tt>[a-dm-p]</tt> (union)</td>
+ </tr>
+ 
+ <tr>
+ <td headers="construct classes" valign="top"><tt>[a-z&amp;&amp;[def]]</tt></td>
+ <td headers="matches"><tt>d</tt>, <tt>e</tt>, or <tt>f</tt>
+ (intersection)</td></tr>
+ <tr>
+ <td headers="construct classes" valign="top"><tt>[a-z&amp;&amp;[^bc]]</tt></td>
+ 
+ <td headers="matches"><tt>a</tt> through <tt>z</tt>, except for
+ <tt>b</tt> and <tt>c</tt>: <tt>[ad-z]</tt> (subtraction)</td>
+ </tr>
+ <tr>
+ <td headers="construct classes" valign="top"><tt>[a-z&amp;&amp;[^m-p]]</tt></td>
+ 
+ <td headers="matches"><tt>a</tt> through <tt>z</tt>, and not <tt>m</tt>
+ through <tt>p</tt>: <tt>[a-lq-z]</tt>(subtraction)</td>
+ </tr>
+ <tr>
+ <th>&nbsp;</th>
+ </tr>
+ 
+ <tr align="left">
+ <th colspan="2" id="predef">Predefined character classes</th>
+ </tr>
+ 
+ <tr>
+ <td headers="construct predef" valign="top"><tt>.</tt></td>
+ <td headers="matches">Any character (may or may not match line terminators)</td>
+ </tr>
+ <tr>
+ <td headers="construct predef" valign="top"><tt>\d</tt></td>
+ <td headers="matches">A digit: <tt>[0-9]</tt></td>
+ </tr>
+ 
+ <tr>
+ <td headers="construct predef" valign="top"><tt>\D</tt></td>
+ <td headers="matches">A non-digit: <tt>[^0-9]</tt></td>
+ </tr>
+ <tr>
+ <td headers="construct predef" valign="top"><tt>\s</tt></td>
+ <td headers="matches">A withespace character: <tt>[ \t\n\x0B\f\r]</tt></td>
+ </tr>
+ <tr>
+ <td headers="construct predef" valign="top"><tt>\S</tt></td>
+ 
+ <td headers="matches">A non-withespace character: <tt>[^\s]</tt></td>
+ </tr>
+ <tr>
+ <td headers="construct predef" valign="top"><tt>\w</tt></td>
+ <td headers="matches">A word character: <tt>[a-zA-Z_0-9]</tt></td>
+ </tr>
+ <tr>
+ <td headers="construct predef" valign="top"><tt>\W</tt></td>
+ <td headers="matches">A non-word character: <tt>[^\w]</tt></td>
+ </tr>
+ 
+ <tr>
+ <th>&nbsp;</th>
+ </tr>
+ <tr align="left">
+ <th colspan="2" id="posix">POSIX character classes (US-ASCII only)<b /></th>
+ </tr>
+ 
+ <tr>
+ <td headers="construct posix" valign="top"><tt>\p{Lower}</tt></td>
+ <td headers="matches">A lower-case alphabetic character: <tt>[a-z]</tt></td>
+ </tr>
+ <tr>
+ <td headers="construct posix" valign="top"><tt>\p{Upper}</tt></td>
+ 
+ <td headers="matches">An upper-case alphabetic character:<tt>[A-Z]</tt></td>
+ </tr>
+ <tr>
+ <td headers="construct posix" valign="top"><tt>\p{ASCII}</tt></td>
+ <td headers="matches">All ASCII:<tt>[\x00-\x7F]</tt></td>
+ </tr>
+ <tr>
+ <td headers="construct posix" valign="top"><tt>\p{Alpha}</tt></td>
+ <td headers="matches">An alphabetic character:<tt>[\p{Lower}\p{Upper}]</tt></td>
+ </tr>
+ 
+ <tr>
+ <td headers="construct posix" valign="top"><tt>\p{Digit}</tt></td>
+ <td headers="matches">A decimal digit: <tt>[0-9]</tt></td>
+ </tr>
+ <tr>
+ <td headers="construct posix" valign="top"><tt>\p{Alnum}</tt></td>
+ <td headers="matches">An alphanumeric character:<tt>[\p{Alpha}\p{Digit}]</tt></td>
+ </tr>
+ <tr>
+ <td headers="construct posix" valign="top"><tt>\p{Punct}</tt></td>
+ 
+ <td headers="matches">Punctuation: One of
+ <tt>!"#$%&amp;'()*+,-./:;&lt;=&gt;?@[\]^_`{|}~</tt></td>
+ </tr>
+ <!-- <tt>[\!"#\$%&'\(\)\*\+,\-\./:;\<=\>\?@\[\\\]\^_`\{\|\}~]</tt>
+ <tt>[\X21-\X2F\X31-\X40\X5B-\X60\X7B-\X7E]</tt>
+ -->
+ <tr>
+ <td headers="construct posix" valign="top"><tt>\p{Graph}</tt></td>
+ <td headers="matches">A visible character: <tt>[\p{Alnum}\p{Punct}]</tt></td>
+ </tr>
+ <tr>
+ <td headers="construct posix" valign="top"><tt>\p{Print}</tt></td>
+ 
+ <td headers="matches">A printable character: <tt>[\p{Graph}\x20]</tt></td>
+ </tr>
+ <tr>
+ <td headers="construct posix" valign="top"><tt>\p{Blank}</tt></td>
+ <td headers="matches">A space or a tab: <tt>[ \t]</tt></td>
+ </tr>
+ <tr>
+ <td headers="construct posix" valign="top"><tt>\p{Cntrl}</tt></td>
+ <td headers="matches">A control character: <tt>[\x00-\x1F\x7F]</tt></td>
+ </tr>
+ 
+ <tr>
+ <td headers="construct posix" valign="top"><tt>\p{XDigit}</tt></td>
+ <td headers="matches">A hexadecimal digit: <tt>[0-9a-fA-F]</tt></td>
+ </tr>
+ <tr>
+ <td headers="construct posix" valign="top"><tt>\p{Space}</tt></td>
+ <td headers="matches">A withespace character: <tt>[ \t\n\x0B\f\r]</tt></td>
+ </tr>
+ 
+ <tr>
+ <th>&nbsp;</th>
+ </tr>
+ 
+ <tr align="left">
+ <th colspan="2">java.lang.Character classes (simple java
+ character type)</th>
+ </tr>
+ 
+ <tr>
+ <td valign="top"><tt>\p{javaLowerCase}</tt></td>
+ <td>Equivalent to java.lang.Character.isLowerCase()</td>
+ </tr>
+ <tr>
+ <td valign="top"><tt>\p{javaUpperCase}</tt></td>
+ <td>Equivalent to java.lang.Character.isUpperCase()</td>
+ </tr>
+ 
+ <tr>
+ <td valign="top"><tt>\p{javawithespace}</tt></td>
+ <td>Equivalent to java.lang.Character.iswithespace()</td>
+ </tr>
+ <tr>
+ <td valign="top"><tt>\p{javaMirrored}</tt></td>
+ <td>Equivalent to java.lang.Character.isMirrored()</td>
+ </tr>
+ 
+ <tr>
+ <th>&nbsp;</th>
+ </tr>
+ <tr align="left">
+ <th colspan="2" id="unicode">Classes for Unicode blocks and categories</th>
+ </tr>
+ 
+ <tr>
+ <td headers="construct unicode" valign="top"><tt>\p{InGreek}</tt></td>
+ <td headers="matches">A character in the Greek&nbsp;block (simple bloc)</td>
+ </tr>
+ <tr>
+ <td headers="construct unicode" valign="top"><tt>\p{Lu}</tt></td>
+ <td headers="matches">An uppercase letter (simple category)</td>
+ </tr>
+ 
+ <tr>
+ <td headers="construct unicode" valign="top"><tt>\p{Sc}</tt></td>
+ <td headers="matches">A currency symbol</td>
+ </tr>
+ <tr>
+ <td headers="construct unicode" valign="top"><tt>\P{InGreek}</tt></td>
+ <td headers="matches">Any character except one in the Greek block (negation)</td>
+ </tr>
+ <tr>
+ <td headers="construct unicode" valign="top"><tt>[\p{L}&amp;&amp;[^\p{Lu}]]&nbsp;</tt></td>
+ 
+ <td headers="matches">Any letter except an uppercase letter (subtraction)</td>
+ </tr>
+ 
+ <tr>
+ <th>&nbsp;</th>
+ </tr>
+ <tr align="left">
+ <th colspan="2" id="bounds">Boundary matchers</th>
+ </tr>
+ 
+ <tr>
+ <td headers="construct bounds" valign="top"><tt>^</tt></td>
+ <td headers="matches">The beginning of a line</td>
+ </tr>
+ <tr>
+ <td headers="construct bounds" valign="top"><tt>$</tt></td>
+ 
+ <td headers="matches">The end of a line</td>
+ </tr>
+ <tr>
+ <td headers="construct bounds" valign="top"><tt>\b</tt></td>
+ <td headers="matches">A word boundary</td>
+ </tr>
+ <tr>
+ <td headers="construct bounds" valign="top"><tt>\B</tt></td>
+ <td headers="matches">A non-word boundary</td>
+ </tr>
+ <tr>
+ <td headers="construct bounds" valign="top"><tt>\A</tt></td>
+ 
+ <td headers="matches">The beginning of the input</td>
+ </tr>
+ <tr>
+ <td headers="construct bounds" valign="top"><tt>\G</tt></td>
+ <td headers="matches">The end of the previous match</td>
+ </tr>
+ <tr>
+ <td headers="construct bounds" valign="top"><tt>\Z</tt></td>
+ <td headers="matches">The end of the input but for the final terminator, if&nbsp;any</td>
+ </tr>
+ 
+ <tr>
+ <td headers="construct bounds" valign="top"><tt>\z</tt></td>
+ <td headers="matches">The end of the input</td>
+ </tr>
+ 
+ <tr>
+ <th>&nbsp;</th>
+ </tr>
+ <tr align="left">
+ <th colspan="2" id="greedy">Greedy quantifiers</th>
+ </tr>
+ 
+ <tr>
+ <td headers="construct greedy" valign="top"><i>X</i><tt>?</tt></td>
+ 
+ <td headers="matches"><i>X</i>, once or not at all</td>
+ </tr>
+ <tr>
+ <td headers="construct greedy" valign="top"><i>X</i><tt>*</tt></td>
+ <td headers="matches"><i>X</i>, zero or more times</td>
+ </tr>
+ <tr>
+ <td headers="construct greedy" valign="top"><i>X</i><tt>+</tt></td>
+ <td headers="matches"><i>X</i>, one or more times</td>
+ </tr>
+ 
+ <tr>
+ <td headers="construct greedy" valign="top"><i>X</i><tt>{</tt><i>n</i><tt>}</tt></td>
+ <td headers="matches"><i>X</i>, exactly <i>n</i> times</td>
+ </tr>
+ <tr>
+ <td headers="construct greedy" valign="top"><i>X</i><tt>{</tt><i>n</i><tt>,}</tt></td>
+ <td headers="matches"><i>X</i>, at least <i>n</i> times</td>
+ </tr>
+ <tr>
+ <td headers="construct greedy" valign="top"><i>X</i><tt>{</tt><i>n</i><tt>,</tt><i>m</i><tt>}</tt></td>
+ <td headers="matches"><i>X</i>, at least <i>n</i> but not more than <i>m</i>
+ times</td>
+ </tr>
+ <tr>
+ <th>&nbsp;</th>
+ </tr>
+ <tr align="left">
+ <th colspan="2" id="reluc">Reluctant quantifiers</th>
+ </tr>
+ <tr>
+ <td headers="construct reluc" valign="top"><i>X</i><tt>??</tt></td>
+ <td headers="matches"><i>X</i>, once or not at all</td>
+ </tr>
+ <tr>
+ <td headers="construct reluc" valign="top"><i>X</i><tt>*?</tt></td>
+ <td headers="matches"><i>X</i>, zero or more times</td>
+ </tr>
+ <tr>
+ <td headers="construct reluc" valign="top"><i>X</i><tt>+?</tt></td>
+ <td headers="matches"><i>X</i>, one or more times</td>
+ </tr>
+ <tr>
+ <td headers="construct reluc" valign="top"><i>X</i><tt>{</tt><i>n</i><tt>}?</tt></td>
+ <td headers="matches"><i>X</i>, exactly <i>n</i> times</td>
+ </tr>
+ <tr>
+ <td headers="construct reluc" valign="top"><i>X</i><tt>{</tt><i>n</i><tt>,}?</tt></td>
+ <td headers="matches"><i>X</i>, at least <i>n</i> times</td>
+ </tr>
+ <tr>
+ <td headers="construct reluc" valign="top"><i>X</i><tt>{</tt><i>n</i><tt>,</tt><i>m</i><tt>}?</tt></td>
+ <td headers="matches"><i>X</i>, at least <i>n</i> but not more than <i>m</i>
+ times</td>
+ </tr>
+ <tr>
+ <th>&nbsp;</th>
+ </tr>
+ <tr align="left">
+ <th colspan="2" id="poss">Possessive quantifiers</th>
+ </tr>
+ <tr>
+ <td headers="construct poss" valign="top"><i>X</i><tt>?+</tt></td>
+ <td headers="matches"><i>X</i>, once or not at all</td>
+ </tr>
+ <tr>
+ <td headers="construct poss" valign="top"><i>X</i><tt>*+</tt></td>
+ <td headers="matches"><i>X</i>, zero or more times</td>
+ </tr>
+ <tr>
+ <td headers="construct poss" valign="top"><i>X</i><tt>++</tt></td>
+ <td headers="matches"><i>X</i>, one or more times</td>
+ </tr>
+ <tr>
+ <td headers="construct poss" valign="top"><i>X</i><tt>{</tt><i>n</i><tt>}+</tt></td>
+ <td headers="matches"><i>X</i>, exactly <i>n</i> times</td>
+ </tr>
+ <tr>
+ <td headers="construct poss" valign="top"><i>X</i><tt>{</tt><i>n</i><tt>,}+</tt></td>
+ <td headers="matches"><i>X</i>, at least <i>n</i> times</td>
+ </tr>
+ <tr>
+ <td headers="construct poss" valign="top"><i>X</i><tt>{</tt><i>n</i><tt>,</tt><i>m</i><tt>}+</tt></td>
+ <td headers="matches"><i>X</i>, at least <i>n</i> but not more than <i>m</i>
+ times</td>
+ </tr>
+ <tr>
+ <th>&nbsp;</th>
+ </tr>
+ <tr align="left">
+ <th colspan="2" id="logical">Logical operators</th>
+ </tr>
+ <tr>
+ <td headers="construct logical" valign="top"><i>XY</i></td>
+ <td headers="matches"><i>X</i> followed by <i>Y</i></td>
+ </tr>
+ <tr>
+ <td headers="construct logical" valign="top"><i>X</i><tt>|</tt><i>Y</i></td>
+ <td headers="matches">Either <i>X</i> or <i>Y</i></td>
+ </tr>
+ <tr>
+ <td headers="construct logical" valign="top"><tt>(</tt><i>X</i><tt>)</tt></td>
+ <td headers="matches">X, as a capturing group</td>
+ </tr>
+ <tr>
+ <th>&nbsp;</th>
+ </tr>
+ <tr align="left">
+ <th colspan="2" id="backref">Back references</th>
+ </tr> 
+ <tr>
+ <td headers="construct backref" valign="bottom"><tt>\</tt><i>n</i></td>
+ <td headers="matches" valign="bottom">Whatever the <i>n</i><sup>th</sup>
+ capturing group matched</td>
+ </tr>
+ <tr>
+ <th>&nbsp;</th>
+ </tr>
+ <tr align="left">
+ <th colspan="2" id="quot">Quotation</th>
+ </tr>
+ <tr>
+ <td headers="construct quot" valign="top"><tt>\</tt></td>
+ <td headers="matches">Nothing, but quotes the following character</td>
+ </tr>
+ <tr>
+ <td headers="construct quot" valign="top"><tt>\Q</tt></td>
+ <td headers="matches">Nothing, but quotes all characters until <tt>\E</tt></td>
+ </tr>
+ 
+ <tr>
+ <td headers="construct quot" valign="top"><tt>\E</tt></td>
+ <td headers="matches">Nothing, but ends quoting started by <tt>\Q</tt></td>
+ </tr>
+ <!-- Metachars: !$()*+.<>?[\]^{|} -->
+ 
+ <tr>
+ <th>&nbsp;</th>
+ </tr>
+ <tr align="left">
+ <th colspan="2" id="special">Special constructs (non-capturing)</th>
+ </tr>
+ 
+ <tr>
+ <td headers="construct special" valign="top"><tt>(?:</tt><i>X</i><tt>)</tt></td>
+ 
+ <td headers="matches"><i>X</i>, as a non-capturing group</td>
+ </tr>
+ <tr>
+ <td headers="construct special" valign="top"><tt>(?idmsux-idmsux)&nbsp;</tt></td>
+ <td headers="matches">Nothing, but turns match flags i d m s u x on - off</td>
+ </tr>
+ <tr>
+ <td headers="construct special" valign="top"><tt>(?idmsux-idmsux:</tt><i>X</i><tt>)</tt>&nbsp;&nbsp;</td>
+ <td headers="matches"><i>X</i>, as a non-capturing group
+ with the given flags i d m s u x on - off</td>
+ </tr>
+ <tr>
+ <td headers="construct special" valign="top"><tt>(?=</tt><i>X</i><tt>)</tt></td>
+ 
+ <td headers="matches"><i>X</i>, via zero-width positive lookahead</td>
+ </tr>
+ <tr>
+ <td headers="construct special" valign="top"><tt>(?!</tt><i>X</i><tt>)</tt></td>
+ <td headers="matches"><i>X</i>, via zero-width negative lookahead</td>
+ </tr>
+ <tr>
+ <td headers="construct special" valign="top"><tt>(?&lt;=</tt><i>X</i><tt>)</tt></td>
+ 
+ <td headers="matches"><i>X</i>, via zero-width positive lookbehind</td>
+ </tr>
+ <tr>
+ <td headers="construct special" valign="top"><tt>(?&lt;!</tt><i>X</i><tt>)</tt></td>
+ <td headers="matches"><i>X</i>, via zero-width negative lookbehind</td>
+ </tr>
+ <tr>
+ <td headers="construct special" valign="top"><tt>(?&gt;</tt><i>X</i><tt>)</tt></td>
+ 
+ <td headers="matches"><i>X</i>, as an independent, non-capturing group</td>
+ </tr>
+ </tbody></table>
+  <br /><i>Copyright 2008 Sun Microsystems, Inc. Reprinted with permission 
+  (see http://java.sun.com/javase/6/docs/api/java/util/regex/Pattern.html#sum)</i>
+ <dl class="user"><dt><b>line terminators </b></dt><dd><br />
+</dd></dl>
+<p>The following are recognized as line terminators in regex:<br />
+</p>
+<ul>
+<li>A newline (line feed) character ("\n"), - UNIX</li>
+<li>A carriage-return character followed immediately by a newline character ("\r\n"), - DOS/WIN</li>
+<li>A standalone carriage-return character ("\r"), - MAC</li>
+<li>A next-line character ("\u0085Q"),</li>
+<li>A line-separator character ("\u2028")</li>
+<li>A paragraph-separator character ("\u2029").</li>
+</ul>
+<dl class="user"><dt><b>flag expressions (?idmsux-idmsux)</b></dt><dd><br />
+</dd></dl>
+<ul>
+<li>In <em>block mode</em> [-b] the expressions "^" and "$" match at
+the beginning and the end of the entire input sequence. The embedded
+flag expression "(?m)" enables multiline mode, so these expressions
+match just after or just before, respectively, any line terminator. </li>
+<li>In <em>dotall mode</em>, the expression "." matches any character,
+including a line terminator. By default this expression does not match
+line terminators. Dotall mode can be enabled via the embedded flag
+expression (?s). </li>
+<li><em>Case-insensitive</em> matching for ASCII can be enabled via the embedded (?i). </li>
+<li><em>Unicode-aware</em> case folding can be enabled via the embedded flag expression (?u). Requires (?i). </li>
+<li><em>Comments mode</em> can be enabled via the embedded flag
+expression (?x). In this mode, whitespace is ignored, and embedded
+comments starting with # are ignored until the end of a line. </li>
+<li><em>Unix-lines</em> mode can be enabled via the embedded flag
+expression (?d). In this mode only "\n" line terminator is recognized
+in the behavior of ".","^", and "$". </li>
+</ul>
+</div>
+<hr class="footer" />
+
+
+</body></html>

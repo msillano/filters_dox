@@ -21,7 +21,7 @@ note: to make a new custom filter using regex:
 - make the your rgx file and place it in filters_dox/bin/rgx/  (example: bat2dox.rgx)
 - make the drivers (bat and/or sh) and place it in . (examples: batdoxfilter.bat / batdoxfilter.sh)
 - Using Doxygen GUI, update config in 'expert' tab (example win-doxygen-HTML-includecode.dox)
-- For more informations about regexfilter and regular expressions see https://github.com/msillano/regexfilter/blob/master/README.pdf
+- For more informations about regexfilter, rgx syntax and regular expressions see https://github.com/msillano/regexfilter/blob/master/README.pdf
 
 note: to make a new custom filter using XSLT:
 - make a XSLT file to get the rigth output and place it in filters_dox/bin/xslt/   (example xml2dox.xslt)

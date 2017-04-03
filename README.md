@@ -14,5 +14,6 @@ Implementation: All filters are build using 3 main java applications:
 2. xmlfilter.java, general purpose, it transforms the XML input using a XSLT stylesheet.
 3. xslt2doxfilter.java special filter for XSLT file and Doxygen.
 
-For more informations download, unzip and navigate the doc-code/html.zip, starting from index.html.
+For more informations download, unzip and navigate the doc-code/html.zip, starting from index.html. That is also a good example for see how filter_dox works: they are documentation from BAT, SH, XHTML, XML and XSLT files.
+
 For  more informations about regexfilter and regular expressions see https://github.com/msillano/regexfilter/blob/master/README.pdf

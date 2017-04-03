@@ -16,4 +16,14 @@ Implementation: All filters are build using 3 main java applications:
 
 For more informations download, unzip and navigate the doc-code/html.zip, starting from index.html. That is also a good example for see how filter_dox works: they are documentation from BAT, SH, XHTML, XML and XSLT files.
 
-For  more informations about regexfilter and regular expressions see https://github.com/msillano/regexfilter/blob/master/README.pdf
+
+note: to make a new custom filter using regex:
+- make the your rgx file and place it in filters_dox/bin/rgx/  (example: bat2dox.rgx)
+- make the drivers (bat end/or sh) and place it in . (examples: batdoxfilter.bat / batdoxfilter.sh)
+- Using Doxygen GUI, update config in 'expert' tab (example win-doxygen-HTML-includecode.dox)
+- For more informations about regexfilter and regular expressions see https://github.com/msillano/regexfilter/blob/master/README.pdf
+
+note: to make a new custom filter using XSLT:
+- make a XSLT file to get the rigth output and place it in filters_dox/bin/xslt/   (example xml2dox.xslt)
+- make the drivers (bat end/or sh) and place it in . (examples: XMLdoxFilter.bat / XMLdoxFilter.sh)
+- Using Doxygen GUI, update config in 'expert' tab (example win-doxygen-HTML-includecode.dox)

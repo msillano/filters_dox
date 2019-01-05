@@ -1,7 +1,7 @@
 # filters_dox
 A kit of java filters for Doxigen: documentation for  BAT, SH, INI, XML, XHTML, XSLT files.
 
-This addon allows BAT, SH, INI, XML, XHTML, XSLT files documentation using Doxygen (http://www.doxygen.org). This contains following filters: 
+This addon allows BAT, SH, INI, XML, XHTML, XSLT files documentation using Doxygen (http://www.doxygen.org, only ver. 1.7.xx, don't works with 1.8.xx). This contains following filters: 
 - BATdoxFilter.sh (BATdoxFilter.bat) for BAT Script files (win)
 - ShdoxFilter.sh (ShdoxFilter.bat) for shellScrip files (linux)
 - XMLdoxFilter.sh (XMLdoxFilter.bat) for generic XML files (2 versions)

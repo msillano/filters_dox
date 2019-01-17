@@ -1,44 +1,54 @@
-#sh2dox regex rules, requires block mode (-b)
+#/** @file
+# Regex rules for sh files processing.
 # Transforms a sheel-script file (.sh) in a c-like file that can be
 # processed by Doxygen.
-# Requires one or more functions and in last line (main) a call to a function. 
-# Comments blocs in javastyle ("#"+"/** ", or "#" +"/") also multiline, before functions and main
-# This file must be used with regexfilter in shell or using a custom driver (see SHdoxFilter.sh)
+# Requires one or more functions and, in last line (main), a call to a function. 
+# Comments blocs in javastyle ("#"+"/"+"*"+"*") also multiline ( "#" or "#*") end with "#"+"*"+"/".
+# @note
+#  - Rule numbers must start from 1 and must be progressive. <br />
+#  - Avoid the presence of Java comment sequences, in comment and regex. Use exploded or escaped style.
+# 
+#  This file must be used with regexfilter in shell or using a custom driver (see BATdoxFilter.bat)
 #Sun Sep 06 12:40:09 CEST 2009
+#*/
+/**
+*Pseudo-function with actual regex.
+*/
 
-# This will force block mode (same as "-b" on command line)
+## This will force block mode (same as "-b" on command line)
 _CL_OPTION_b=true
 
-# rule 1, global main format like c function ()
-# requires one or more functions and in last line (main) a call to a function. 
+## rule 1, global main format like c function ()
+## requires one or more functions and in last line (main) a call to a function. 
 regex1=(?sm)\\A((?:[^{]*\\{[^}]*\\}\\s*$)*)\\s*((?:#.*$.)*).*^\\s*(\\S*)\\s(\\p{Print}*)$.*\\Z
 replacement1= $1  \n$2 \ncall_using ( \\$1 ... ) {\n $3  $4 \n}\n
-#replacement1= $1  \n$2 \n$3  $4 \n
+#replacement1=test: $1  \n$2 \n$3  $4 \n
 
-# rule 2, #!/  becomes //
+## rule 2, #!/  becomes //
 regex2=#!/
 replacement2=//
 
-# rule 3, #*  becomes *
+## rule 3, #*  becomes *
 regex3=(?m)^#[ ]*\\*
 replacement3=*
 
-# rule 4, #/** becomes /**
-regex4=(?m)^#[ ]*/\\*\\*
-replacement4=/**
+## rule 4, #/ becomes /
+regex4=(?m)^#([ ]*)/
+replacement4=/
 
-# rule 5, ### becomes /// 
+## rule 5, ### becomes /// 
 regex5=(?m)^###([^#].*)$
 replacement5=/// $1
 
-# rule 6, ## becomes /// 
+## rule 6, ## becomes /// 
 regex6=(?m)^##([^#].*)$
 replacement6=/// $1
 
-# rule 7, # becomes // 
+## rule 7, # becomes // 
 regex7=#
 replacement7=//
 
+# not used:
 # rule 8, $ becomes ;$
 # regex8=(?m)^([^/\\*].*[^\\{/])$
 # replacement8=$1;
@@ -64,4 +74,3 @@ replacement7=//
 # rule 12, esac; becomes esac
 # regex12=esac;
 # replacement12=esac
-

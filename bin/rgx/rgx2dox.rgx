@@ -1,0 +1,35 @@
+#/** @file
+# Regex rules for RGX files processing.
+# Transforms a file (.xxx, INI like) in a java-like file that can be
+# processed by Doxygen.
+# Comments blocs in javastyle ("#"+"/"+"**") also multiline ( "#" or "#*") end with "#"+"*"+"/".
+# In data section, double the "#"
+# @note
+#  - Rule numbers must start from 1 and must be progressive. <br />
+#  - Avoid the presence of Java comment sequences, in comment and regex. Use exploded or escaped style.
+# 
+#  This file must be used with regexfilter in shell or using a custom driver (see BATdoxFilter.bat)
+#Sat Feb 19 22:26:38 CET 2011 
+#*/
+
+/** @file
+ * @version 06/01/19 for Doxygen 1.8.15
+ * @author Copyright &copy;2006 Marco Sillano.
+ */ 
+/**
+*Pseudo-function with actual regex.
+*/
+## This will force block mode (same as "-b" on command line)
+_CL_OPTION_b=true
+
+## rule 1:  '#  ' becomes '#'
+regex1=(?m)\#[\s]*
+replacement1=#
+
+## rule 2:  '^#' becomes ''
+regex2=(?m)^\#
+replacement2=
+
+## rule 3, adds pseudo-function file_code
+regex3=(?sm)\\A[^\\*]*(^/\\*\\*.*^\\*\\/)(.*)\\Z
+replacement3= dummy;\n $1 \n public RGX_code()\n{/\\*$2\n*\\/}\n

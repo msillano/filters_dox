@@ -1,5 +1,5 @@
 # filters4Doxygen  ver 4.03
-Many projects requires a mix of file formats, so it is useful to use an uniform documentation tool not only for programmation languages, but also for extra file required by project.  Doxygen supports many languages, but it can be extended more.
+Many projects requires a mix of file formats, so it is useful to use an uniform documentation tool not only for programming languages, but also for extra files required by the project.  Doxygen supports many languages, but it can be extended more.
 
 This addon allows .BAT, .SH, .RGX, .XML, .XHTML, .XSLT files documentation using Doxygen (http://www.doxygen.nl, ver. 1.8.15) 
 
@@ -11,12 +11,12 @@ This contains following filters for Doxygen:
 - XSLTdoxFilter.sh (XSLTdoxFilter.bat) for XSLT/XSL stylesheets
 - RGXdoxFilter.sh (RGXdoxFilter.bat) for RGX (text files INI-like)
 
-Actual filters are .BAT (for Windows) or .SH (for linux) drivers that associate a java application, some parameters and the required auxiliary files (regexp or xslt) to perform the transformation of input file to a format processable by Doxygen. 
+The actual filters are the .BAT (for Windows) or .SH (for linux) drivers that associate a java application, some parameters and the necessary auxiliary files (regexp or xslt) to perform the transformation of the input file into a format that can be processed by Doxygen.
 
 ### Implementation
 All filters are build using 3 main java basic filter (sources included):
-1. regexfilter.java, general purpose, it replace text using regular expressions. 
-2. xmlfilter.java, general purpose, it transforms the XML input using a XSLT stylesheet.
+1. regexfilter.java, general purpose, it replace the input text using regular expressions. 
+2. xmlfilter.java, general purpose, it transforms the input XML using a XSLT stylesheet.
 3. xslt2doxfilter.java special filter for XSLT file and Doxygen.
 
 For more informations you can download, unzip and navigate the doc/html.zip, starting from index.html.  This is also a good example for see how filters4Doxygen works: because this project uses  JAVA, BAT, SH, RGX,  XML, XSL and XSLT files.

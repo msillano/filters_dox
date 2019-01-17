@@ -4,66 +4,93 @@
     <xsl:import href="xslt/libPrintCol.xsl" />
     <xsl:param name="fileName">unknow</xsl:param>
     <xsl:param name="INLINE_SOURCE">true</xsl:param>
+    <xsl:param name="status">close</xsl:param>
     <xsl:output method="xml"
                 omit-xml-declaration='yes'
                 indent="no" />
-                <!--
- /**
- * @file html2dox.xslt
- *
- * XHTML stylesheet for doxygen filters.
+ <!--
+ /** @file 
+ * Process a XHTML file, documented using Doxygen+filters_dox style. 
+ * This trasformation is for generic XHTML files, to build a 'javascript-like' file processable by Doxygen. <BR />
  * This trasformation is for XHTML files: the XHTLM is documented as
- * a whole, at file level, then (optional) the XHTML code is presented, with syntax highlighting and collassable nodes.
+ * a whole, at file level, then the XHTML code is presented, with syntax highlighting and collassable nodes.
  * At end are all javascript fragments, in standard doxygen style.
  * @param
  * INLINE_SOURCE controls the XHTML source output (default = true)
  * @param
+ *  status  controls the XHTML tree look (default = close)
+ * @param
  * fileName used to build comments.
- *  @pre. The input file: <br/>
- *  - It must be a well-formed XHTML file.
- *  - All documentation blocks must be java-like ('/'+'*'+'*') inside a HTML comments ('<'+'!'+'-'+'-'), and at first level, children of <HTML> tag.
- *  - The javascript documentation is in standard doxygen style.
- *
- * @see libPrintCol.xsl
- *
- * @author Copyright 2006-2009 Marco Sillano (sillano@mclink.it).
+ * @pre The input file: <br/>
+ *  - must be a well-formed XHTML file.
+ *  - all documentation blocks must be java-like ('/'+'*'+'*') inside a HTML comments ('<'+'!'+'-'+'-'), and at first level, children of &lt;HTML> tag.
+ *  - If some Javascript is present, it must be documented in standard doxygen style.
+ *  - See @ref sample_files/example01.html for some quirks on writing XHTML comments.
+ * @use
+ *  This transformation must be used by 
  */  -->
+ 
+<!-- 
+/** @file
+ * @version 06/01/19 for Doxygen 1.8.15
+ * @author Copyright &copy;2006 Marco Sillano.
+ */ -->
+ 
 
  <!--
  /**
- *  main template. <br/>
- *  It process a XHTML file:
- *  - extracts the documentation blocs ( only at first level, as childs of <HTML> tag) putting them at start.
- *  - uses libPrintCol.xsl on full XHTML tree
- *  - adds javadoc fragments at end for doxygen process.
+ *  main template.
+ *  It process a XHTML file to get a Javascript-like file:
+ *  - extracts the documentation blocs ( only at first level, as childs of &lt;HTML> tag) putting them at start.
+ *  - includes the XHTML tree to the Detailed Descripion ( if INLINE_SOURCE = true).
+ *  - adds javascript fragments (if any) at end for doxygen process.
  */ -->
     <xsl:template match="/">
+<!-- meta-Doxygen commands, to exclude any interference -->    
         <xsl:variable name="cstart"
                       select="concat('/','**')" />
         <xsl:variable name="cend"
                       select="concat('*','/')" />
-        <xsl:text>
-dummy=null;
-</xsl:text>
-        <xsl:value-of select="$cstart" />
-        <xsl:text>
-  @file </xsl:text><xsl:value-of select="$fileName" />
-        <xsl:for-each select="/ * / comment()[contains(., $cstart)]">
-
-            <xsl:value-of select="substring-before(substring-after(., $cstart),$cend)"
-                          disable-output-escaping="yes" />
-        </xsl:for-each>
+        <xsl:variable name="cfile"   select="concat('@','file')"/>
+        <xsl:variable name="chstr"  select="concat('@','htmlonly')"/>
+        <xsl:variable name="chend"  select="concat('@','endhtmlonly')"/>
+ <!-- required if miss first template or detailed comment by Doxygen: not in output -->
+     <xsl:text>
+ param dummy = "null"; </xsl:text>
+          <xsl:for-each select="/ * / comment()[contains(., $cstart)]">
+             <xsl:value-of select="substring-before(.,$cend)" disable-output-escaping="yes"/>
+             <xsl:choose>
+                <xsl:when test = "position() = 1">
+                   <xsl:for-each select="/ * / * / link">
+                     <xsl:text> @par Import (css)
+ include <xsl:value-of select="@href"/> </xsl:text> 
+                   </xsl:for-each>
+                   <xsl:for-each select="/ * / * / script[@src]">
+                     <xsl:text> @par Import (js)
+ include <xsl:value-of select="@src"/> </xsl:text> 
+                   </xsl:for-each>
+                  <xsl:text><xsl:value-of select="$cend"/></xsl:text>
+                   </xsl:when>
+               <xsl:otherwise>
+                  <xsl:text><xsl:value-of select="$cend"/></xsl:text>
+               </xsl:otherwise>
+          </xsl:choose>
+      </xsl:for-each> 
         <!-- the html pretty print -->
-        <xsl:if test="$INLINE_SOURCE='true'">@par HTML <xsl:value-of select="$fileName" />: 
-        <br />
-  @htmlonly 
-           <xsl:call-template name="embeddedHeader" />
+   <xsl:if test="$INLINE_SOURCE='true'">
+      <xsl:text>
+ <xsl:value-of select="concat($cstart, ' ', $cfile)"/></xsl:text> 
+   <xsl:text>      
+ <xsl:value-of select="concat(' @','details ')" /></xsl:text>
+      <xsl:text>
+<xsl:value-of select="$chstr"/></xsl:text>
+       <xsl:text>     
+       </xsl:text>
+        <xsl:call-template name="embeddedHeader" />
            <div class="fragment" style="border: 1px solid #CCCCCC; background-color: #f8f8f8;">
               <xsl:apply-templates mode="printCol" />
            </div>
-           <xsl:text>
- @endhtmlonly 
-</xsl:text>
+       <xsl:value-of select="$chend" />
         </xsl:if>
         <xsl:text>
 <xsl:value-of select="$cend" /> 
@@ -78,7 +105,7 @@ dummy=null;
         <xsl:value-of select="."
                       disable-output-escaping="yes" /></xsl:for-each>
     </xsl:template>
-    <!--
+<!--
 /**
 Special formatting for Doxygen.
 Scripts node content is skipped

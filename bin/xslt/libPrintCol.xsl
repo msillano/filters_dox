@@ -25,41 +25,52 @@
     | CVS $Id: xml2html.xslt,v 1.10 2004/05/01 13:20:55 joerg Exp $
     +-->
 <!--
-  modified 07/03/06 by Marco Sillano (sillano@mclink.it) to work w IE6
+  modified 07/03/06 by Marco Sillano to work w IE6
   modified 20/03/06 by M. Sillano for Doxygen output.
   modified 10/09/07 by M. Sillano for o2xdl 3.0
   modified 03/08/09 by M. Sillano for Mozilla/Ie compatibility
+  modified 06/01/19 by M. Sillano for Doxygen 1.8.15 compatibility
  -->
-
 
 <xsl:stylesheet version="1.0"
             xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
             xmlns="http://www.w3.org/1999/xhtml">
+
+   <!-- 
+     Controls the default initial status of the XML tree
+                       status='open'|'close' -->
+    <xsl:param name="status">open</xsl:param>
  <!--
- /**
- * @file libPrintCol.xsl
- *
- * XSLT library for scripts. Pretty-prints XML/XHTML files/fragments as collapsible tree with syntax color highlighting.
- * This library can be "imported", so it is possible to overwrite
- * some rules, to get the desired behaviour.
+ /** @file
+ *  This is a XSLT library (template collection). 
+ *  Pretty-prints XML/XHTML files/nodes as collapsible tree with syntax color highlighting.
+ *  This library can be "imported", so it is possible to overwrite
+ *  some rules, to get the desired behaviour.
  *
  * @note The output is valid XHTML 1.1
- * @note Requires STYLE definitions and some Javascript code.
-     - for head tags using external files,  see engine_libprintcol_template_03()
-     - for embedded standalone tags, see engine_libprintcol_template_02()
+ * @note The XHTML output requires STYLE definitions and some Javascript code.
+     - for head tags including external files,  see @ref xslt_libprintcol_template_03()
+     - for embedded standalone tags, see @ref xslt_libprintcol_template_02()
  *
  * @see libPrintXML.xsl for simpler b/w formatting.
- *
- * @version 10/09/07 for XHTML output
+ */ -->
+ 
+ <!--
+ /** 
+ * @var status 
+ * @details Controls the default initial look of the XML tree: accepts 'open'|'close' 
+ */ --> 
+ <!--
+ /** @file
+ * @version 06/01/19 for Doxygen 1.8.15
  * @author   Copyright 1999-2004 The Apache Software Foundation @n
- *           Modified by Marco Sillano (sillano@mclink.it).
+ *           Modified by Marco Sillano (sillano.marco(at)gmail.com).
  */  -->
 
  <!--
  /**
- * Pretty-prints XML in color, entry point.
- *
- * Process a  XML/XHTML lpc_fragment and produces as output an HTML lpc_fragment showing the code.@n
+ * Pretty-prints XML as colorful tree, entry point.
+ * Function (named template) to process a  XML (XSLT/XHTML) fragment. It produces in output an HTML lpc_fragment showing the code.@n
  * Great sample of "data-driven" style in XSLT transformation.
  *
  * @par Use:
@@ -69,9 +80,8 @@
  *     <tt>  &lt;div class="lpc_fragment" &gt; @n
  *              &nbsp;&nbsp;    &lt;xsl:apply-templates  select="node" mode="printCol" /&gt;@n
  *               &lt;/div&gt;  </tt>
- *
  * @see xml2html.xsl for a sample of use.
- */  -->
+ */ -->
 
     <xsl:template name="printCol">
         <div class="lpc_fragment">
@@ -83,13 +93,13 @@
  <!--
  /**
  * Generates tags with embedded css and Javascript.
- *
- * Function to ceate <tt>&lt;style&gt;</tt> and <tt>&lt;script&gt;</tt> HTML tags,
- * as required by HTML fragments build by engine_libprintcol_template_01().
+ * Function (named template) to create <tt>&lt;style&gt;</tt> and <tt>&lt;script&gt;</tt> XHTML tags,
+ * as required by HTML fragments build by xslt_libprintcol_template_01().<BR/>
+ * Usually in <tt>&lt;HEAD></tt> tag, but works also in <tt>&lt;BODY></tt>.
  * @par Use:
  *      <tt> &lt;xsl:call-template  name="embeddedHeader" /&gt;</tt>
  *
- * @see engine_libprintcol_template_03 for the use of external files.
+ * @see xslt_libprintcol_template_03 for the use of external files.
  */  -->
    <xsl:template name="embeddedHeader">
             <style type="text/css">
@@ -125,9 +135,13 @@ function doClick(event) {
         e = e.parentNode
     }
 
-    if (mark.childNodes[0].nodeValue == "+") {
+ // var msg = '0:'+ e.childNodes[0].nodeName+'.'+e.childNodes[0].className+'\n';
+ // msg    += '1:'+ e.childNodes[1].nodeName+'.'+e.childNodes[1].className+'\n';
+  var s =  ( e.childNodes.length > 2)? 2 : 1;
+  if (mark.childNodes[0].nodeValue == "+") {
         mark.childNodes[0].nodeValue = "-";
-        for (var i = 1; i < e.childNodes.length; i++) {
+         for ( var i = s; i < e.childNodes.length; i++) {
+    //        msg += i+':'+ e.childNodes[i].nodeName+'.'+e.childNodes[i].className+'\n';
             var name = e.childNodes[i].nodeName;
             if (name != "#text") {
                 if (name == "pre" || name == "span") {
@@ -140,32 +154,26 @@ function doClick(event) {
         }
     } else if (mark.childNodes[0].nodeValue == "-") {
         mark.childNodes[0].nodeValue = "+";
-   if (window.event) {
-
-        for (var i = 2; i < e.childNodes.length; i++) {
-            if (e.childNodes[i].nodeName != "#text") {
-                e.childNodes[i].style.display = "none";
+         for (var i = s; i < e.childNodes.length; i++) {
+   //      msg += i+':'+ e.childNodes[i].nodeName+'.'+e.childNodes[i].className+'\n';
+          if (e.childNodes[i].nodeName != "#text" ) {
+                 e.childNodes[i].style.display = "none";
             }
-           }
-    }
-    else {
-       for (var i = 2; i < e.childNodes.length; i++) {
-            if (e.childNodes[i].nodeName != "#text") {
-                e.childNodes[i].style.display = "none";
-            }
-          }
-        }
-    }
+         }
+     }
+//  alert(msg);
+     
 }
 ]]></xsl:comment>
-            </script>
+      </script>
    </xsl:template>
+
 <!--
  /**
  * Generates tags including local/remote css and Javascript files.
  *
- * Function to ceate <tt>&lt;style&gt;</tt> and <tt>&lt;script&gt;</tt> HTML tags in header,
- * as required by HTML fragments build by engine_libprintcol_template_01().@n
+ * Function (named template) to ceate <tt>&lt;style&gt;</tt> and <tt>&lt;script&gt;</tt> HTML tags in header,
+ * as required by HTML fragments build by libprintcol_template_01().@n
  *
  * Includes local or remote files: @n
  *   - {$baseURL}include/colCode.js
@@ -185,7 +193,7 @@ function doClick(event) {
  *        &nbsp;&nbsp; &lt;xsl:with-param name="baseURL"&gt; http://www.o2xdl.org/3.0/HTML/ &lt;/xsl:with-param&gt;
  *       &lt;/xsl:call-template &gt;@n </tt>
  *
- * @see engine_libprintcol_template_02 for standalone HTML.
+ * @see xslt_libprintcol_template_02 for standalone HTML.
  *
  */ -->
 
@@ -239,16 +247,29 @@ function doClick(event) {
     <xsl:template match="comment()"
                   mode="printCol">
         <div class="e">
-          <span>
-            <span class="b"
-                  onclick="doClick(event)">-</span>
-            <span class="m">&lt;!--</span>
-          </span>
-          <div class="c">
+           <xsl:if test="$status='close'">
+            <span>
+             <span class="b"
+                  onclick="doClick(event)">+</span>
+             <span class="m">&lt;!--</span>
+            </span>
+            <div class="c" style="display:none" >
                 <pre><xsl:value-of select="." /></pre>
-            <span class="m">--&gt;</span>
-          </div>
-
+                <span class="m">--&gt;</span>
+             </div>
+          </xsl:if>
+          <xsl:if test="$status='open'">
+           <span>
+             <span class="b"
+                  onclick="doClick(event)">-</span>
+             <span class="m">&lt;!--</span>
+           </span>
+           <div class="c">
+                <pre><xsl:value-of select="." /></pre>
+                <span class="m">--&gt;</span>
+             </div>
+            </xsl:if>
+          
         </div>
     </xsl:template>
 <!--
@@ -336,8 +357,14 @@ function doClick(event) {
                   mode="printCol">
         <div class="e">
             <div>
-                <span class="b"
+                <xsl:if test="$status='close'">
+                   <span class="b"
+                      onclick="doClick(event)">+</span>
+                </xsl:if>
+                <xsl:if test="$status='open'">
+                   <span class="b"
                       onclick="doClick(event)">-</span>
+                </xsl:if>
                 <span class="m">&lt;</span>
                 <span class="en">
                      <xsl:value-of select="name(.)" />
@@ -353,19 +380,37 @@ function doClick(event) {
                     <xsl:text>&gt;</xsl:text>
                 </span>
             </div>
-            <div>
-            <!-- children nodes processing -->
-                <xsl:apply-templates mode="printCol" />
-                <div>
-                    <span class="m">&lt;/</span>
-                    <span class="en">
-                        <xsl:value-of select="name(.)" />
-                    </span>
-                    <span class="m">
-                        <xsl:text>&gt;</xsl:text>
-                    </span>
-                </div>
-            </div>
+            <xsl:if test="$status='open'">
+              <div style="display:block">
+              <!-- children nodes processing -->
+                  <xsl:apply-templates mode="printCol" />
+                  <div>
+                      <span class="m">&lt;/</span>
+                      <span class="en">
+                          <xsl:value-of select="name(.)" />
+                      </span>
+                      <span class="m">
+                          <xsl:text>&gt;</xsl:text>
+                      </span>
+                  </div>
+              </div>
+            </xsl:if>
+           <xsl:if test="$status='close'">
+              <div style="display:none">
+              <!-- children nodes processing -->
+                  <xsl:apply-templates mode="printCol" />
+                  <div>
+                      <span class="m">&lt;/</span>
+                      <span class="en">
+                          <xsl:value-of select="name(.)" />
+                      </span>
+                      <span class="m">
+                          <xsl:text>&gt;</xsl:text>
+                      </span>
+                  </div>
+              </div>
+            </xsl:if>
+ 
         </div>
     </xsl:template>
    <!--
@@ -408,10 +453,10 @@ function doClick(event) {
         </xsl:for-each>
     </xsl:template>
 
-<!-- for debug only -->
-    <!--
+ <!--
  /**
  * This catchs errors.
+ * for debug only.
  */  -->
    <xsl:template match="*"
                   mode="printCol">

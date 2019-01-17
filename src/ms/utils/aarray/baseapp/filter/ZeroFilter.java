@@ -29,11 +29,11 @@ import java.io.PrintStream;
 import ms.utils.aarray.baseapp.AABaseAppl;
 /**
  * Incomplete abstract base class for text filters, uses AABaseAppl.java.
- * 
+ *
  * Supplies common declarations and methods required by all Filter applications.
  *
- * @author M. Sillano (marco.sillano@gmail.com)
- * @version 4.02 10/11/25 (c) M.Sillano 2006-2011
+ * @author M. Sillano (marco.sillano(at)gmail.com) &copy;2006-2010 M.Sillano
+ * @version 2.03 2010/01/12  m.s.
  */
 
 public abstract class ZeroFilter {
@@ -45,13 +45,13 @@ public abstract class ZeroFilter {
 
     /**
      * The Associative Array storing all command line option and application data, is initialized by startup()
-     * 
+     *
      * @see ms.aarray.AABaseAppl
      */
     protected static AABaseAppl aaBase;
 
     /**
-     * Input File, or null  if using standard input. 
+     * Input File, or null  if using standard input.
      */
     protected static File inFile = null;
 
@@ -62,7 +62,7 @@ public abstract class ZeroFilter {
     protected static BufferedReader fin;
 
     /**
-     * Output File, or null  if using standard output. 
+     * Output File, or null  if using standard output.
      */
     protected static File outFile = null;
 
@@ -75,23 +75,23 @@ public abstract class ZeroFilter {
     /**
      * Initializes standard i/o required by all Filters.
      * - Parses the command line.
-     * - Processes "-o=FILE", "--output=FILE", "-i=FILE" and "--input=FILE" 
+     * - Processes "-o=FILE", "--output=FILE", "-i=FILE" and "--input=FILE"
      * Must be called by a derived class.
-     * @post 
+     * @post
      *  - fin and fout initialized and ready
      *  - inFile != null only if input is from a file and not from sin.
      *  - outFile != null only if output is to a file and not to sout.
-     *  
-     * @param args from main() 
+     *
+     * @param args from main()
      */
 
     protected static void startup(String[] args) {
-        // 
+        //
         aaBase.commandLineParse(args);
         // syntax check output file
   //      if (!(aaBase.isOption("o") | aaBase.isOption("-output")))
   //          aaBase.helpAndDies("ERROR: output file mandatory.");
-        //		
+        //
         String oFileN = aaBase.getParam("o", 0);
         if (oFileN == null)
             oFileN = aaBase.getParam("-output", 0);
@@ -115,7 +115,7 @@ public abstract class ZeroFilter {
         } else {
             fout = System.out;
         }
-        //		
+        //
         if (iFileN != null) {
             try {
                 inFile = new File(iFileN);

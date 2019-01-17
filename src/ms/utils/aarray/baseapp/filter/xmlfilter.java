@@ -17,20 +17,15 @@
 
 /**
  * @package ms.filters
- * General purpose text filters. 
+ * General purpose text filters.
  */
-
-// note: following documentation is escaped and formatted to
-// give good HTML pages using doxygen (see
-// http://java.sun.com/javase/6/docs/api/java/util/regex/Pattern.html#sum )
-
 
 /**
  * @file xmlfilter.java
  * Filter input XML (XHTML) using a XSLT stylesheet.
- * 
+ *
  * This application implements a general purpose XML Transformer using XSLT.
- * 
+ *
  * The input file (or standard input) must be a valid XML/XHTML file. It is Transformed
  * using a XSLT stylesheet (xslFile) and the output is send to standard output or
  * saved in a file.<br>
@@ -40,8 +35,8 @@
  * <PRE>
  Usage:        xmlfilter   -h|-?|--help|--version
                xmlfilter   [-i=FILE] [-u=FILE] [xslFile] [properties]*
-               xmlfilter   [--CTextconfigload=FILE]|[--CXmlconfigload=FILE] 
- 
+               xmlfilter   [--CTextconfigload=FILE]|[--CXmlconfigload=FILE]
+
              Transforms the XML inputFile, using a XSLT stylesheet (xslFile).
 
     -i=FILE, --input=FILE     the XML input file. Default = standard input.
@@ -51,34 +46,36 @@
     options:  -h|-?|--help    display this help and exit.
               --version       print version and exit.
 
-    more optional output properties for a Transformer: 
+    more optional output properties for a Transformer:
 
-    --omit_xml_declaration=yes|no  
+    --omit_xml_declaration=yes|no
                               Default = yes
     --indent=yes|no           Default = indent
     --method=xml|html|text    Default = html
     --encoding=CODE           Char code
     --standalone=yes|no       Declaration style
-    --doctype_system=DOCTYPE  used in the document type declaration. 
+    --doctype_system=DOCTYPE  used in the document type declaration.
     --doctype_public=PUBLIC   public identifier.
-    --cdata_section_elements="LIST" 
+    --cdata_section_elements="LIST"
                               specifies a whitespace delimited list of qnames
     --media_type=MIME         output MIME content type.
 
     --usr_parameter=name&value
                               Additional parameters passed to xslt.
-                                &ls;local or qname>+"&amp;"+&lsvalue>   
+                                &ls;local or qname>+"&amp;"+&lsvalue>
 
-    --CTextconfigload=FILE     reads option/param from a config file, text mode. 
-                                 default=xmlfilter.cfg 
-    --CXmlconfigload=FILE      reads option/param from a config file, XML mode. 
-                                 default=xmlfilter.cfg 
+    --CTextconfigload=FILE     reads option/param from a config file, text mode.
+                                 default=xmlfilter.cfg
+    --CXmlconfigload=FILE      reads option/param from a config file, XML mode.
+                                 default=xmlfilter.cfg
     --CSaveconfig=FILE         saves all options/parameter to a config file,
                                  default=xmlfilter.cfg"
- </PRE>	  
- @endhtmlonly                        
- * 
-*/
+ </PRE>
+ @endhtmlonly
+ *
+ * @author M. Sillano (marco.sillano(at)gmail.com) &copy;2006-2010 M.Sillano
+ * @version 4.03 2018/01/12  m.s.  update to Doxygen 1.8.15
+ */
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -99,21 +96,21 @@ import ms.utils.aarray.baseapp.AABaseAppl;
 
 /**
  * Stand-alone filter using a XSLT Transformer.
- * Extends ZeroFilter defining private data structures: version, help, 
+ * Extends ZeroFilter defining private data structures: version, help,
  * Option, Parameter and default file names.<BR>
  * Input/Output from/to files or standard in/out.<BR>
  * Full configurable, this application can read options from command line or
  * from a configuration file. <BR>
- * 
+ *
  * @see javax.xml.transform
- * 
+ *
  * @author M. Sillano (marco.sillano@gmail.com)
  * @version 4.02 10/11/25 (c) M.Sillano 2006-2011
  */
 public class xmlfilter extends ZeroFilter {
 	// =======================================================
 	// standard ZeroFIle extensions
-	static private final String version = "xmlfilter (ms-doxygen-addons) 4.02 (10/11/25) \n"
+    static private final String version = "xmlfilter (ms-doxygen-addons)  4.03 (2018/01/18) \n"
 			+ "Copyright (C) 2006-2011  M.Sillano \n"
 			+ "License GPLv3+: GNU GPL version 3 or later <http://gnu.org/licenses/gpl.html> \n"
 			+ "This is free software: you are free to change and redistribute it. \n"
@@ -132,7 +129,7 @@ public class xmlfilter extends ZeroFilter {
 			"xslFile                   XSLT stylesheet file. Default = ./xmlfilter.xsl.",
 			"options:  -h|-?|--help    display this help and exit.",
 			"          --version       print version and exit.",
-			
+
 			"more optional output properties for a Transformer: ",
 			"--omit_xml_declaration=yes|no  ",
 			"                          Default = yes",
@@ -177,7 +174,7 @@ public class xmlfilter extends ZeroFilter {
 	/**
 	 * Initialize all data structures. Custom setup, it uses ZeroFilter.startup
 	 * for input/output standard processing.
-	 * 
+	 *
 	 * @param args
 	 *            command line from main().
 	 */
@@ -205,7 +202,7 @@ public class xmlfilter extends ZeroFilter {
 	/**
 	 * Main static, implements a XSLT transformer. All user optional output
 	 * properties are applied to Transformer.
-	 * 
+	 *
 	 * @param args command line processed by startup()
 	 */
 

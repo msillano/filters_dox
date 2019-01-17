@@ -1,8 +1,0 @@
-#by regexfilter 4.02 (10/11/25)
-#Sat Feb 19 22:26:38 CET 2011
-regex3=^\#
-replacement3=//
-regex2=^\#[ ]*\\*
-replacement2=*
-regex1=^\#[ ]*(/\\*\\*)
-replacement1=$1

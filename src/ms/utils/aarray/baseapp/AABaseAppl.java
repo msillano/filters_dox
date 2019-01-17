@@ -15,7 +15,7 @@
 
 /**
  * @package ms.utils.aarray
- * Associtive Array classes for applications. 
+ * Associtive Array classes for applications.
  */
 
 package ms.utils.aarray.baseapp;
@@ -31,16 +31,18 @@ import ms.utils.aarray.AArray;
 /**
  * base class for Applications: manages help, configuration file and Command Line
  * parameters.
- * 
- * Extends {@link ms.utils.aarray.AArray} class with a general purpose command line
+ *
+ * Extends {@ref ms.utils.aarray.AArray} class with a general purpose command line
  * parser plus simple managers for help and configuration file.<br />
+ * @author M. Sillano (marco.sillano(at)gmail.com) &copy;2006-2010 M.Sillano
+ * @version 2.03 2010/01/12  m.s. javadoc revision
  */
- 
+
 public class AABaseAppl extends AArray {
 
 	/**
 	 * default comment added to config file.
-	 * 
+	 *
 	 * To be overwrite by application.
 	 */
 
@@ -48,7 +50,7 @@ public class AABaseAppl extends AArray {
 
 	/**
 	 * default value: sample help in Unix style.
-	 * 
+	 *
 	 * To be overwrite by application.
 	 */
 	public static String[] helpStrings = {
@@ -90,7 +92,7 @@ public class AABaseAppl extends AArray {
 
 	/**
 	 * default value: sample version in Unix style.
-	 * 
+	 *
 	 * To be overwrite by using application.
 	 */
 	public static String version = "AABaseApp version 2.03 2010/01/12 \n"
@@ -151,7 +153,7 @@ public class AABaseAppl extends AArray {
 
 	/**
 	 * Constructor, updates application specific attributes.
-	 * 
+	 *
 	 * @param shortNames
 	 *            application supplied String for short option names.
 	 * @param longNames
@@ -178,7 +180,7 @@ public class AABaseAppl extends AArray {
 	 * <CODE>this</CODE>, and special Options/Parameters are processed.
 	 * <li>On failure, puts an error message (if verbose >0) and exit program.
 	 * </UL>
-	 * 
+	 *
 	 * @param args
 	 *            from main()
 	 */
@@ -212,7 +214,7 @@ public class AABaseAppl extends AArray {
 
 	/**
 	 * getter for config file path.
-	 * 
+	 *
 	 * @return the config path in use.
 	 * @see #setConfigFile(String)
 	 */
@@ -233,7 +235,7 @@ public class AABaseAppl extends AArray {
 	 * <LI>If <CODE>errMessage</CODE> is null it puts the help message in
 	 * standard output and exit program (exit code {@link #PROCESS_HELP}).
 	 * </UL>
-	 * 
+	 *
 	 * @param errMessage
 	 *            or null.
 	 * @see #setVerbose(int)
@@ -261,9 +263,9 @@ public class AABaseAppl extends AArray {
 	}
 
 	/**
-	 * basic load for configuration file. 
+	 * basic load for configuration file.
 	 * The file content is merged to data in Properties.
-	 * 
+	 *
 	 * @param f
 	 *            the file path
 	 * @param mode
@@ -285,7 +287,7 @@ public class AABaseAppl extends AArray {
 
 	/**
 	 * saves Properties in a configuration file using defaults.
-	 * 
+	 *
 	 * @see #fileTitle
 	 * @see #setIOMode(int)
 	 * @see #setConfigFile(String)
@@ -296,14 +298,14 @@ public class AABaseAppl extends AArray {
 
 	/**
 	 * basic save to a configuration file.
-	 * 
+	 *
 	 * @param f
 	 *            the file path
 	 * @param mode
 	 *            the I/O text format: one of MODE_INI, MODE_XML, MODE_TXT.
 	 * @param comment
 	 *            added to configuration file.
-	 * 
+	 *
 	 * @exception Error
 	 *                if it can't write the file exit program.
 	 */
@@ -327,7 +329,7 @@ public class AABaseAppl extends AArray {
 
 	/**
 	 * setter for configuration file path.
-	 * 
+	 *
 	 * @param fName
 	 *            the configuration file path.
 	 * @see #getConfigFile()
@@ -338,11 +340,11 @@ public class AABaseAppl extends AArray {
 
 	/**
 	 * setter for mode.
-	 * 
+	 *
 	 * @param mode
 	 *            the text file format (one of MODE_INI, MODE_XML, MODE_TXT)
 	 * @see java.util.Properties
-	 * 
+	 *
 	 */
 	public void setIOMode(int mode) {
 		if ((mode == MODE_INI) || (mode == MODE_XML) || (mode == MODE_TXT))
@@ -353,7 +355,7 @@ public class AABaseAppl extends AArray {
 
 	/**
 	 * setter for verbose.
-	 * 
+	 *
 	 * @param level
 	 *            int, one of 0:(quiet) 1:(error) 2:(verbose)
 	 * @see #helpAndDies(String)
@@ -367,7 +369,7 @@ public class AABaseAppl extends AArray {
 
 	/**
 	 * parses all <CODE>args[]</CODE> for match with a specified parameter or long option.
-	 * 
+	 *
 	 * @param args
 	 *            command line from main()
 	 * @param param
@@ -390,11 +392,11 @@ public class AABaseAppl extends AArray {
 
 	/**
 	 * step: parses <CODE>args[pos]</CODE> for Arguments.
-	 * 
+	 *
 	 * @param args
 	 *            command line as array from main(), this tests only the argument
 	 *            at position <CODE>pos</CODE>.
-	 * @return 
+	 * @return
 	 *         - On match, adds Argument to AArray, increments  <CODE>pos</CODE> and returns true <br />
 	 *         - If actual arg is not an Argument string returns false
 	 * @pre. the same args[pos] must be processed before by
@@ -414,11 +416,11 @@ public class AABaseAppl extends AArray {
 
 	/**
 	 * step: parses <CODE>args[pos]</CODE> and extracts parameters or long options.
-	 * 
+	 *
 	 * @param args
 	 *            command line as array from main(), this tests only the argument
 	 *            at position <CODE>pos</CODE>.
-	 * @return 
+	 * @return
 	 *         - On match, adds Parameter/option to AArray, increments  <CODE>pos</CODE> and returns true <br />
 	 *         - If actual arg is not a parameter string returns false
 	 */
@@ -437,16 +439,16 @@ public class AABaseAppl extends AArray {
 
     /**
 	 * step: parses <CODE>args[pos]</CODE> vs. usrOpts, case sensitive.
-	 * 
+	 *
 	 * @param args
 	 *            command line from main()-
-	 * @return 
-	 *        - if option in SPECIALP_HELP2 print help and exit program. 
+	 * @return
+	 *        - if option in SPECIALP_HELP2 print help and exit program.
 	 *        - on match, add all Option keys to this, and returns true
-	 *        - if the actual arg is not an option string returns false 
+	 *        - if the actual arg is not an option string returns false
 	 *        - if it founds an option not in usrOpts, prints an error message and exit
 	 *         program.
-	 * 
+	 *
 	 * @pre. usrOpts is a global string with all the chars allowed as short
 	 *       option.
 	 */
@@ -474,10 +476,10 @@ public class AABaseAppl extends AArray {
 	}
 
 	/**
-	 * 
-	 * basic read configuration file. 
+	 *
+	 * basic read configuration file.
 	 *  The file content is merged to data in Properties.
-	 * 
+	 *
 	 * @param f
 	 *            the file path
 	 * @param mode
@@ -506,7 +508,7 @@ public class AABaseAppl extends AArray {
 
 	/**
 	 *test for long names bad abbreviate.
-	 * @return 
+	 * @return
 	 *    If <CODE>xpar</CODE> match more than one aLongNames[] prints error message
 	 *    and exit.
 	 */
@@ -524,7 +526,7 @@ public class AABaseAppl extends AArray {
 
 	/*
 	 * test a single parameter or long option in <CODE>args[pos]</CODE>.
-	 * 
+	 *
 	 * @param args
 	 *            from main, uses pos as index
 	 * @param param
@@ -570,7 +572,7 @@ public class AABaseAppl extends AArray {
 
 	/**
 	 * Test for SPECIALP_LOAD argument.
-	 * @post. 
+	 * @post.
 	 * - if found loads the configuration file. Updates
 	 * default configuration path from param SPECIALP_LOAD value, if it exists.
 	 * - continues without error if configuration file don't exists.
@@ -600,7 +602,7 @@ public class AABaseAppl extends AArray {
 	 *@post.
 	 * - if found save the configuration file. Does not
 	 * update default configuration path.
-	 * 
+	 *
 	 * @exception ioerror
 	 *                if it cant write the file exit program.
 	 */
@@ -616,13 +618,13 @@ public class AABaseAppl extends AArray {
 
 	/**
 	 * Only for test purposes.
-	 * 
+	 *
 	 * This main reads and parses the Command Line, then it puts on standard
 	 * output the result. It does also some more tests on objects and cleanup of
 	 * configuration file.<br />
 	 * Test it using different command line parameters (see samples) at run
 	 * time.
-	 * 
+	 *
 	 * @param args
 	 *            command line.
 	 */
@@ -671,7 +673,8 @@ public class AABaseAppl extends AArray {
 		// store object - String
 		String test = "";
 		for (int i = 0; i < args.length; i++) {
-		      test += (args[i].indexOf(' ') == -1 ? args[i] : "\"" + args[i] + "\"")
+			test += (args[i].indexOf(' ') == -1 ? args[i] : "\"" + args[i]
+					+ "\"")
 					+ " ";
 		}
 		x.setObject(test, "commandLine");
@@ -680,8 +683,9 @@ public class AABaseAppl extends AArray {
 		x.setObject(n, "aDouble");
 		// load object String
 		String s1 = x.getObject(String.class, "commandLine");
-		System.out.println("*** Store/Read Object: String - Command line is \n*** "
-			        + s1);
+		System.out
+				.println("*** Store/Read Object: String - Command line is \n*** "
+						+ s1);
 		// load object Double
 		Double d1 = x.getObject(Double.class, "aDouble");
 		System.out.println("*** Store/Read Object: Double is \n***" + d1);
@@ -700,10 +704,12 @@ public class AABaseAppl extends AArray {
 		x.saveConfigFile("configFile.txt", MODE_TXT, "Test file");
 		x.saveConfigFile("configFile.xml", MODE_XML, "Test XML");
 		x.saveConfigFile("configFile.ini", MODE_INI, "Test INI");
-		System.out.println("*** Saved configFile.txt, configFile.ini and configFile.xml");
+		System.out
+				.println("*** Saved configFile.txt, configFile.ini and configFile.xml");
 		// test cleanAllSpecial
 		x.cleanAllSpecial(true, true);
-		System.out.println("*** After cleanAllSpecial(true, true) AArray content is:");
+		System.out
+				.println("*** After cleanAllSpecial(true, true) AArray content is:");
 		// --- deprecated, used only here for dump on screen
 		x.list(System.out);
 		x.loadConfigFile("configFile.xml", MODE_XML);

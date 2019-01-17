@@ -1,0 +1,39 @@
+	
+			body	{ font-family: Verdana, Arial, San-serif; font-size: 9pt; color: black;  }
+			table	 { font-size: 9pt; width="560px"; cellpadding="2px"; cellspacing="0"; }
+			img		 { border: 0px; }
+			.td1    {	text-align : center;  width : 60px;  vertical-align : middle;  }
+		   .td2    {	text-align : left; 		width : 400px }	
+			.td3    {	text-align : right; 	 font-size: 8pt;  width : 100px;  vertical-align : middle;  }
+			.h1a	  { font-size: 13pt; text-align: left; font-weight: bold; color:#000000; }
+			.h1b		{ font-size: 13pt; text-align: left; font-weight: bold; color:#0033FF;  }
+			.sub	{ font-weight: bold;margin-bottom: 0px; }
+		    .small  { font-size: 8pt; }
+          .central  {	text-align : center;}
+			 .lateral  {text-align : right;}
+			.note {
+	font-size : 9pt;
+	color : Blue;
+	font-style : italic;
+}	.gobutt {background-color:#A6A6FF;   } 
+.notebullet {
+	font-size : 9pt;
+	color : Blue;
+	font-style : italic;
+	text-indent : 30px;
+	display : list-item;
+}
+ .smallbullet
+   { font-size: 8pt;  display : list-item;  list-style : square;  text-indent : 30px;    }	
+   .br {
+	font-weight : bold;
+	color : Red;
+}
+   .basecolor {
+	color : Blue;
+}
+.action {
+}
+.c3{
+	font-weight : bold;
+}

@@ -1,0 +1,61 @@
+<po:purchaseOrder
+     orderDate="1999-10-20"
+     confirmDate="1999-10-22"
+     xmlns:po="urn:o2xdl-po"
+     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+     xsi:schemaLocation ='urn:o2xdl-po  po.schema.xsd' >
+
+<!--
+/** @file
+ *  Sample XML file with comments.
+ *  Example of XML file using Doxygen+filters_dox documentation style.@n
+ *  <i>This file is used by @b w3c in schema presentation.</i>
+ *  @note
+ *     This documentation is build by Doxygen using the @ref xmlfilter.java and @ref xml2dox.xslt @n
+ *     - To exclude the pseudo-function %XML_code() and the XML tree, set "INLINE_SOURCE&false" in 
+ *     driver @ref XMLdoxFilter.bat. @n
+ *     -  If <tt>INLINE_SOURCE&true</tt>, to get a closed XML tree (default is open)  set param @c status
+ *         to @c close in @ref xml2dox.xslt.
+ */ -->
+ 
+ <!-- 
+ /** @file
+ * @details
+ * @version 06/01/19 for Doxygen 1.8.15
+ * @author Copyright 2006 Marco Sillano.
+ */ -->
+
+<!--  here XML code -->
+
+  <shipTo country="US">
+    <name>Kim Yoshida</name>
+    <street>123 Maple Street</street>
+    <city>Mill Valley</city>
+    <state>CA</state>
+    <zip>90952</zip>
+  </shipTo>
+  <billTo country="US">
+    <name>Neil Smith</name>
+    <street>8 Oak Avenue</street>
+    <city>Old Town</city>
+    <state>PA</state>
+    <zip>95819</zip>
+  </billTo>
+  <po:comment>Hurry, my lawn is going wild!</po:comment>
+  <!-- Order: 
+      items list -->
+  <Items>
+    <item partNum="872-AA">
+      <productName>Lawnmower</productName>
+      <quantity>1</quantity>
+      <USPrice>148.95</USPrice>
+      <po:comment>Confirm that this is electric.</po:comment>
+    </item>
+    <item partNum="926-AA">
+      <productName>Baby Monitor</productName>
+      <quantity>1</quantity>
+      <USPrice>39.98</USPrice>
+      <shipDate>1999-05-21</shipDate>
+    </item>
+  </Items>
+</po:purchaseOrder>

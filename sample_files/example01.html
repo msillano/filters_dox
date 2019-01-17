@@ -1,15 +1,22 @@
 <html>
  <!--
-  /**
+  /** @file
    *  XHTML Example page.
-   * From 
+   *  Simple XHTML test page with some Javascript code.
+   *    This XHTML page do nothing: here only to see how works Doxygen+filters_dox  with XHTML.
    * 
    *  @note
-   *     This documentation is build by Doxygen using the html2dox Filter.
-   *   All documentation blocks are proceesed  before  the HTML code.
-   *    JavaScript is commented at end, after HTML.
-   */
-  -->
+   *    - This documentation is build by Doxygen using the html2dox Filter.
+   *    - All documentation blocks are processed  before the XHTML code.
+   *    - The XHTML code is processed as a whole, and appended to Detailed Description as tree ( if INLINE_SOURCE = true).
+   *    - JavaScript is placed at end, after XHTML, and processed in standard Doxygen way.
+   */ -->
+  <!-- 
+/** @file
+ * @version 06/01/19 for Doxygen 1.8.15
+ * @author Copyright &copy;2006 Marco Sillano.
+ */ -->
+
     <head>
     <title> Test for local WIN/IE setup </title>
     <BASE target ="_parent"/>
@@ -18,7 +25,7 @@
     <meta http-equiv="Content-Language" content="en" />
     <meta name="Description" content="OOXBricks Tests the local WIN installation. Developping o2xdl applications" />
     <meta name="Author" content="OOXBricks" />
-    <meta name="Copyright" content="2004 OOXBricks - M.Sillano" />
+    <meta name="Copyright" content="2004 OOXBricks" />
     <link rel = "stylesheet" href = "css/xsknbase.css" type = "text/css" media = "screen"/>
     </head>
 
@@ -28,7 +35,7 @@
 <!-- header -->
             <tr>
                 <td class = 'td1'>
-                    <img alt = 'logo' src = "images/imgG03.gif" width = "60" height = "60"/></td>
+                    <img alt = 'logo' src = "pics/imgG03.gif" width = "60" height = "60"/></td>
                 <td class = 'td2'>
                     <DIV class = 'h1a'>OOXBricks</DIV>
                     <DIV class = 'h1b'>XSKnife Version 1.2</DIV></td>
@@ -42,7 +49,7 @@
 <!-- title -->
             <tr>
                 <td colspan = '3' class = 'central'>
-                    <H6> Development area</H6></td>
+                    <H5> Development area</H5></td>
             </tr>
 
             <tr>

@@ -37,52 +37,52 @@ import java.util.TreeSet;
 import javax.xml.bind.JAXB;
 
 /**
- * Associative Array to store command line arguments and Objects. 
- * 
+ * Associative Array to store command line arguments and Objects.
+ *
  * This generic Associative Array is designed as an application central storage for
  * Command Line parameters, for config files content and for application
  * specific data (for session persistence).<br />
  * This class extends <CODE> java.util.Properties</CODE> and implements
  * the basic store/retrieve for <i> options, parameters, arguments </i>  and for
  * application private <i>JABX Objects</i>.
- * This class adds also a new file format, the  <i>INI format </i>  (TXT and XML 
+ * This class adds also a new file format, the  <i>INI format </i>  (TXT and XML
  * formats are implemented in Properties).<br />
- * This class uses  2 levels (section + key) or 3 levels (section + key + index) 
+ * This class uses  2 levels (section + key) or 3 levels (section + key + index)
  * Properties keys schemas.<br />
  * Subclasses MUST implement the data policy and the Command Line parsing. <br />
- * 
+ *
  * <h4> Options </h4>
  *      Options are boolean values, valuing "true" if present. The Option name is a
  *      String (case sensitive), short (as "?") or long (like "-help").<br />
  *      Options are stored as: <CODE> CL_OPTION_PREFIX+"."+name+"="+"true"</CODE>
  *      Applications can use  {@link #isOption(String)} and {@link #setOption(String)}.
- * 
+ *
  * <h4> Parameters </h4>
  *      Parameters are  String pairs: name=value. The Parameter name is a String
  *      (case sensitive), short (as "c") or long (like "-config").<br />
  *      Multiple instances of same Parameter are allowed, and stored using an incremental
  *      index starting from 1.<br />
  *      Parameters are stored as pair: <CODE> CL_PARAM_PREFIX+"."+name+"#"+index+"="+value</CODE><br />
- *      Applications can use  {@link #isParameter(String)}, {@link #getParam(String, String)}  
+ *      Applications can use  {@link #isParameter(String)}, {@link #getParam(String, String)}
  *       and {@link #setParam(String, String)}, to handle the last parameter value, or  {@link #getParamCount(String)}
  *       and {@link #getParam(String, int)} to access Parameters via key+index.
- * 
+ *
  *<h4> Arguments </h4>
  *      Arguments are  String values not associated with a name. They
  *      are processed as Parameter, using the conventional name  <CODE>CL_ARGUMENT</CODE>. So all
  *      Argument() methods are helper functions, here for convenience.<br />
  *      Arguments are stored as pair:  <CODE> CL_PARAM_PREFIX+"."+CL_ARGUMENT+"#"+index+"="+value</CODE><br />
  *      Applications can use {@link #getArgumetsCount()} and {@link #getArgument(int)}.
- * 
+ *
  *<h4>Objects</h4>
  *      JAXB object {@link javax.xml.bind.JAXB} are stored as a serialized XML tree, associated with a name.
  *      The name must be unique. <br />
  *      This allows store/retrieve typed values:
  *      Objects are stored as pair:  <CODE> OBJECT_PREFIX+"."+name=XML_value </CODE><br />
  *      Applications can use  {@link #setObject(Object, String)} and {@link #getObject(Class, String)}
- * 
+ *
  *<h4> INI file format</h4>
- * 	 
+ *
  *  The INI file format is a text format which is divided into sections
  *  and couples key-value. In one section all keys must have unique
  *  names, likewise in an INI file we can have many sections but they
@@ -96,7 +96,7 @@ import javax.xml.bind.JAXB;
  *  An INI file looks like this: <pre>
  * [ASection]
  *   OptionValue=true
- *# comment 
+ *# comment
  *   list=Number 2
  *; also comment
  * [AnotherSection]
@@ -107,25 +107,24 @@ import javax.xml.bind.JAXB;
  *   asection.list=Number 2
  *   anothersection.MoreValues=yes
  * </pre>
- *  Applications can use {@link #loadFromINI(InputStream)} 
+ *  Applications can use {@link #loadFromINI(InputStream)}
  * and {@link #storeToINI(OutputStream, String)} and they can manage values defined by <i>section:key</i> (INI like) using
  *  {@link #setProperty(String, String, String)}, {@link #getProperty(String, String, String)} and
- *  {@link #deleteProperty(String, String)}. 
+ *  {@link #deleteProperty(String, String)}.
  *  <br />Cleanup can be done using {@link #cleanAllSpecial(boolean, boolean)}.<br />
  * Saving in TXT or XML modes can be done using parent Properties methods.
  *
  * @see   <a href="http://www.codeproject.com/useritems/INIFile.asp?print=true" >INI sample code</a>
  * @see   <a href="http://ubique.ch/code/inieditor/" >more INI sample code</a>
  * @see   <a href="http://tanksoftware.com/jtank/src/showsrc.php?src=src/net/jtank/io/Ini.java" >more INI sample code</a>
- * 	 
- * @author M. Sillano (marco.sillano@gmail.com) &copy;2006-2010 M.Sillano
- * 
+ *
+ * @author M. Sillano (marco.sillano(at)gmail.com) &copy;2006-2010 M.Sillano
  * @version 2.03 2010/01/12  m.s. javadoc revision
  */
 
 /*
  * @version 2.03 2010/01/12  m.s. javadoc revision
- * @version 2.02 2009/08/12  m.s. added INI read/save, changed internal format 
+ * @version 2.02 2009/08/12  m.s. added INI read/save, changed internal format
  * @version 2.01 2009/03/25  m.s. command line parameters.
  * @version 1.03 2006/12/14  m.s. revision
  * @version 1.01 2006/11/03  m.s. initial draft
@@ -150,14 +149,14 @@ public class AArray extends Properties {
 
     /**
      * Used as separator for <CODE>index</CODE> values.
-     * 
+     *
      * Any char, also "".
      */
     public static final String INDEX_CHAR = "#";
 
     /**
      * Used as separator for <CODE>section</CODE> and <CODE>key</CODE> values.
-     * 
+     *
      * If <CODE>PREFIX_CHAR</CODE> is present in the <CODE>section</CODE> it will be escaped.
      */
     public static final String PREFIX_CHAR = ".";
@@ -189,9 +188,9 @@ public class AArray extends Properties {
 
     /**
      * constructor from a Config file in INI format.
-     * 
+     *
      * Use of different config format can be done after creation.
-     * @param INIfile file path 
+     * @param INIfile file path
      * @see #load(InputStream)
      * @see #load(java.io.Reader)
      * @see #loadFromXML(InputStream)
@@ -204,15 +203,15 @@ public class AArray extends Properties {
         } catch (FileNotFoundException e) {
             // nothing to do
         } catch (IOException e) {
-            // nothing to do  
+            // nothing to do
         }
     }
 
     /**
      * deletes all Command Line elements and/or Objects stored in <CODE> this.</CODE>
-     * 
+     *
      *  Usefull to store a clean config file.
-     * 
+     *
      * @param CLine
      *            if true deletes all Options, Parameters and Arguments in  <CODE>this.</CODE>.
      * @param Obj
@@ -242,7 +241,7 @@ public class AArray extends Properties {
 
     /**
      * general pourpose delete for properties
-     * Use <CODE> section+key+index</CODE> access. 
+     * Use <CODE> section+key+index</CODE> access.
      * @param section first level key
      * @param key second level
      * @param index the index (&gt;0) or 0 (no index)
@@ -254,7 +253,7 @@ public class AArray extends Properties {
     /**
      * gets the value of an Argument.
      * If <CODE> index==0</CODE> returns the last <CODE>value</CODE> (i.e. the max sequential index in this).
-     * 
+     *
      * @param index the instance number (starting from 1) or 0.
      * @return the String Argument value if it is present, or null;
      * @see #getArgumetsCount()
@@ -265,7 +264,7 @@ public class AArray extends Properties {
 
     /**
      * gets the number of Arguments in <CODE> this</CODE>.
-     * 
+     *
      * @return the number of Arguments.
      * @see #getArgument(int)
      */
@@ -296,10 +295,10 @@ public class AArray extends Properties {
     // @SuppressWarnings("")
     /**
      * Retrieves an jaxbObject stored in <CODE>this<CODE>.
-     * 
-     * The use  of jaxbObject makes simple to store/retrieve typed values, that is useful for 
+     *
+     * The use  of jaxbObject makes simple to store/retrieve typed values, that is useful for
      * application private data.
-     * @param &lt;T&gt; 
+     * @param &lt;T&gt;
      * @param type
      *            the object class.
      * @param name
@@ -318,10 +317,10 @@ public class AArray extends Properties {
     }
 
     /**
-     * Retrieves the <CODE> value</CODE> associated to a Parameter of given <CODE>name</CODE>. 
-     * 
+     * Retrieves the <CODE> value</CODE> associated to a Parameter of given <CODE>name</CODE>.
+     *
      * If index == 0 returns the last value (i.e. the max sequential index).
-     * 
+     *
      * @param name
      *            the parameter name.
      * @param index
@@ -337,7 +336,7 @@ public class AArray extends Properties {
 
     /**
      * getter, returns the Parameter value or the default.
-     * 
+     *
      * @param name
      *            the parameter name.
      * @param defaultValue
@@ -352,11 +351,11 @@ public class AArray extends Properties {
 
     /**
      * gets the number of Parameters in <CODE>this</CODE> having the given <CODE> name </CODE>
-     * 
+     *
      * @param key
      *            the Parameter name.
      * @return Parameter count.
-     *           
+     *
      */
     public int getParamCount(String key) {
         return getParamNextIndex(key) - 1;
@@ -379,7 +378,7 @@ public class AArray extends Properties {
     // --------------------------- OPTIONS
     /**
      * getter for of an Option having given <CODE>key</CODE>.
-     * 
+     *
      * @param key
      *            the Option name
      * @return true if Option is present.
@@ -392,7 +391,7 @@ public class AArray extends Properties {
     // ----------------------------- PARAMETERS
     /**
      * tests for a Parameter having gived <CODE>name</CODE>.
-     * 
+     *
      * @param name
      *            of the Parameter
      * @return true if a Parameter is present.
@@ -403,14 +402,14 @@ public class AArray extends Properties {
     }
 
     /**
-     *  reads a config INI files. 
+     *  reads a config INI files.
      *
-     *  This method allows to read all defaults from a INI config file. 
+     *  This method allows to read all defaults from a INI config file.
      *  This is useful for WIN-java-linux compatibility and interoperability.<br />
      *
-     * @param  in                  
+     * @param  in
      *               input stream
-     * @throws IOException         
+     * @throws IOException
      *               if INI file cant be read (e.g. bad file format)
      * @see #storeToINI(OutputStream, String)
      */
@@ -443,8 +442,8 @@ public class AArray extends Properties {
 
     /**
      * stores a <CODE>jaxbObject</CODE> in <CODE> this</CODE> as XML string.
-     * 
-     * The use  of jaxbObject makes simple to store/retrieve typed values, that is useful for 
+     *
+     * The use  of jaxbObject makes simple to store/retrieve typed values, that is useful for
      * application private data.
      * @param jaxbObject
      *            the object.
@@ -460,9 +459,9 @@ public class AArray extends Properties {
     }
 
     /**
-     * stores the Option <CODE> key</CODE>. 
+     * stores the Option <CODE> key</CODE>.
      * Override existing option having same <CODE>key</CODE>.
-     * 
+     *
      * @param key
      *            the Option name
      * @see #isOption(String)
@@ -473,9 +472,9 @@ public class AArray extends Properties {
 
     /**
      * stores in <CODE>this</CODE> a new Parameter.
-     * 
+     *
      * It never overwrites an existing Parameters having the given <CODE>name</CODE>, but increments index.
-     * 
+     *
      * @param name
      *            the Parameter name.
      * @param value
@@ -500,12 +499,12 @@ public class AArray extends Properties {
 
     /**
      *  save <CODE>this</CODE> using the INI text format.
-     * @param out 
+     * @param out
      *              Output Stream
      * @param comments
      *              a string added at file header
      * @see  #loadFromINI(InputStream)
-     * 
+     *
      */
     public void storeToINI(OutputStream out, String comments)
     //            throws IOException
@@ -530,13 +529,13 @@ public class AArray extends Properties {
         outf.flush();
         outf.close();
     }
-    
+
     /**
      * Dump of all properties in text format.
      */
     @Override
     public String toString(){
-     
+
          String s ="";
         TreeSet<String> k = new TreeSet<String>(this.stringPropertyNames());
         for (String akey : k) {
@@ -544,7 +543,7 @@ public class AArray extends Properties {
         }
     return s;
     }
-        
+
 
 
     // -------------- private: utilities 2/3 COMPOSITE KEYS
@@ -571,7 +570,7 @@ public class AArray extends Properties {
     }
 
     /**
-     * general purpose getter for properties using <CODE>section+key+index</CODE> access 
+     * general purpose getter for properties using <CODE>section+key+index</CODE> access
      * @see #setProperty(String, String, int, String)
      */
     private String getProperty(String section, String key, int index,
@@ -580,9 +579,9 @@ public class AArray extends Properties {
     }
 
     /**
-     * general purpose setter for properties using <CODE>section:key:index</CODE> access      
-     * @param section 
-     * @param key 
+     * general purpose setter for properties using <CODE>section:key:index</CODE> access
+     * @param section
+     * @param key
      * @param index (0 = no index)
      * @param value the property value
      * @see #getProperty(String, String, int, String)
@@ -605,11 +604,11 @@ public class AArray extends Properties {
     }
 
     /**
-     * deletes an Arguments in this. 
-     * 
+     * deletes an Arguments in this.
+     *
      * Renumbers all Arguments having a number
      * greater than <CODE> index</CODE>. If index==0 deletes all Arguments.
-     * 
+     *
      * @param index
      *            the instance number (starting from 1) or 0.
      */
@@ -620,7 +619,7 @@ public class AArray extends Properties {
 
     /**
      * deletes an <CODE>jaxbObject</CODE> stored in <CODE> this</CODE>.
-     * 
+     *
      * @param name
      *            unique, used as key for the object.
      */
@@ -630,7 +629,7 @@ public class AArray extends Properties {
 
     /**
      * deletes an Option.
-     * 
+     *
      * @param key
      *            the Option name
      */
@@ -640,10 +639,10 @@ public class AArray extends Properties {
 
     /**
      * deletes a Parameter.
-     * 
-     * It renumbers all Parameters having a number greater than <CODE> index</CODE>. 
+     *
+     * It renumbers all Parameters having a number greater than <CODE> index</CODE>.
      * If index == 0 deletes all <CODE>name</CODE> Parameters.
-     * 
+     *
      * @param name
      *            the Parameter name.
      * @param index
@@ -662,8 +661,8 @@ public class AArray extends Properties {
 
     /**
      * stores in this a String <CODE>value</CODE> as Argument.
-     * 
-     * @param value  
+     *
+     * @param value
      *           the Argument value.
      */
     protected void setArgument(String value) {
@@ -672,7 +671,7 @@ public class AArray extends Properties {
 
     /**
      * only for test purposes.
-     * 
+     *
      * @param args command line.
      */
 

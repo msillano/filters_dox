@@ -14,12 +14,12 @@ This contains following filters for Doxygen:
 The actual filters are the .BAT (for Windows) or .SH (for linux) drivers that associate a java application, some parameters and the necessary auxiliary files (regexp or xslt) to perform the transformation of the input file into a format that can be processed by Doxygen.
 
 ### Implementation
-All filters are build using 3 main java basic filter (sources included):
+All filters are build using 3 main java basic filters (sources included):
 1. regexfilter.java, general purpose, it replace the input text using regular expressions. 
 2. xmlfilter.java, general purpose, it transforms the input XML using a XSLT stylesheet.
 3. xslt2doxfilter.java special filter for XSLT file and Doxygen.
 
-For more informations you can download, unzip and navigate the doc/html.zip, starting from index.html.  This is also a good example for see how filters4Doxygen works: because this project uses  JAVA, BAT, SH, RGX,  XML, XSL and XSLT files.
+For more informations you can download, unzip and navigate the doc/html.zip, starting from index.html.  This is also a good example for see how filters4Doxygen works: because this project uses  JAVA, BAT, SH, RGX,  XML, XSL and XSLT files!
 
 ### The architecture of this project simplifies the creation of new custom filters
 how make a new custom filter using regex, to document a new file format (new extension) TXT-like?

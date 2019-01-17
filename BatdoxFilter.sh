@@ -1,13 +1,13 @@
 #!/bin/sh
 #/**  
-#*  @file BatdoxFilter.sh   
+#*  @file    
 #*  Enables "*.bat" files documentation in doxygen (linux).
 #*  @par use:
 #*  Using Doxygen GUI, update config in 'expert' tab:
 #*  @li project/EXTENSION_MAPPING section set 'bat=Java'
 #*  @li input/FILTER_PATTERNS section set value '*.bat=BatdoxFilter.sh' (if in path).
 #*  @li input/FILE_PATTERNS section add value '*.bat' 
-#*  @li input/EXCLUDE_SYMBOLS section add values '__pad0__' .. '__pad10__'(workaround).
+#*  @li input/EXCLUDE_SYMBOLS section add values '%__pad0__' .. '%__pad10__'(workaround).
 #*  @li to include the source in documentation set source_browser/INLINE_SOURCE = true and
 #*    input/FILTER_SOURCE_FILES = true.
 #*  @see BatdoxFilter.bat for windows version.

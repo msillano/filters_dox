@@ -1,20 +1,13 @@
 #!/bin/sh
-#/**  @file XSLTdoxFilter.sh    Filter for stylesheet transformation files (*.xslt, *.xsl) */
-
-#/**  This filter process every template-tag as a pseudo-function, putting the XMLT as comment in the function body.@n
-#* For more uniform results, use in config FILTER_SOURCE_FILES    = YES, INLINE_SOURCES         = YES.
-#*
-#* @see xslt2dox.java
-#*/
 
 # /**  
-# *   @file XSLTdoxFilter.sh 
+# *   @file
 # *    Enables XSLT ("*.xsl") files documentation in doxygen (linux).
 # *  @par use:
 # *  Using Doxygen GUI, update config in 'expert' tab:
 # *  @li in project/EXSTENSION_MAPPING add 'xsl=java';
 # *  @li in input/FILE_PATTERNS section add the value '*.xsl'
-# *  @li in input/FILTER_PATTERNS section add the value '*.xml=C:/filters/HTMLdoxFilter.bat' (path can change).
+# *  @li in input/FILTER_PATTERNS section add the value '*.xml=HTMLdoxFilter.sh' (if in path).
 # *  @li to include the source in documentation set source_browser/INLINE_SOURCE = true and
 # *   input/FILTER_SOURCE_FILES = true.
 # *  @see XSLTdoxFilter.bat for Win version
@@ -30,7 +23,7 @@
 #*    and '*'+'/' <br /> 
 #*    @li processes only documentation blocks at first livel, inside the &lt;xsl:stylesheet> root tag.
 #*    @li a first optional block (starting '@'+mainpage) is the global documentation block.
-#*    @li a second optional block (starting '@'+'file' +&lt;name_file>) is the detailed descripition block.
+#*    @li a second optional block (starting '@'+'file' ) is the detailed descripition block.
 #*    @li all next blocks are associated to following &lt;xsl:template>
 #*  @par example:
 #*     See bin/xslt/libPrintCol.xsl.

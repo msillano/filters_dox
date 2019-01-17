@@ -1,14 +1,13 @@
 #!/bin/sh
 # /**  
-# *   @file HTMLdoxFilter.sh 
+# *   @file 
 # *   Enables "*.html" (XHTML) files documentation (no source) in doxygen (linux).
 # *  This filter works only on XHTML files. (You can use <b>tidy</b> to transform HTML to XHTML).<br />
 # *  @par use:
 # *  Using Doxygen GUI, update config in 'expert' tab:
 # *  @li in project/EXSTENSION_MAPPING add 'html=Javascript';
 # *  @li in input/FILE_PATTERNS section add the value '*.html' (same for '*.htm', '*xhtml').
-# *  @li in input/FILTER_PATTERNS section add the value '*.html=C:/filters/HTMLdoxFilter.bat' (path can change).
-# *  @li to include the source HTML in documentation use HTMLdoxFilter_is.sh.
+# *  @li in input/FILTER_PATTERNS section add the value '*.html=HTMLdoxFilter.sh' (if in path).
 # *  @li to include the Javascript source in documentation set source_browser/INLINE_SOURCE = true and
 # *    input/FILTER_SOURCE_FILES = true.
 # *  @see HTMLdoxFilter.bat for Win version
@@ -24,10 +23,8 @@
 #*   @li HTML: this processes comments (&lt;!-- -->) followed by a javadoc style comment: '/'+'*'+'*'
 #*    and '*'+'/' <br /> 
 #*    @li HTML: processes only blocks at first livel, inside the &lt;HTML> tag.
-#*    @li HTML: a first optional block (starting '@'+mainpage) is the global documentation block.
-#*    @li HTML: a second optional block (starting '@'+file +&lt;name_file>) is the detailed descripition block.
+#*    @li HTML: a second optional block (starting '@'+file ) is the detailed descripition block.
 #*    @li HTML: the last bock is the HTML documentation.
-#*    @li HTML: the source HTML code is NOT included in documentation
 #*    @li javascript: all javascript bocks are deplaced 'as is' after the HTML section
 #*    @li javascript: all documentation blocks (variables, functions etc.) are processes as usual by doxygen 
 #*  @par example:

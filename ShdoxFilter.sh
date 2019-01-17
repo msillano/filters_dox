@@ -1,10 +1,10 @@
 #!/bin/sh
-#/**  @file ShdoxFilter.sh 
+#/**  @file  
 #*    Enables "*.sh" files documentation in doxygen (linux).
 #*  @par use:
 #* Using Doxygen GUI, update config in 'expert' tab:
 #*  @li project/EXTENSION_MAPPING section set 'sh=Java'
-#*  @li input/FILTER_PATTERNS section set value '*.sh=ShdoxFilter.sh' (path can change).
+#*  @li input/FILTER_PATTERNS section set value '*.sh=ShdoxFilter.sh' (if in path).
 #*  @li input/FILE_PATTERNS section add value '*.sh' 
 #*  @li in input/EXCLUDE_SYMBOLS section add values from '__pad0__' to '__pad10__'(workaround for obscure doxygen bug).
 #*  @li to include the source in documentation set source_browser/INLINE_SOURCE = true).
@@ -21,7 +21,7 @@
 #*    and '*'+'/'
 #*    @li In multiline comments, every line must have '#'+'*'
 #*    @li A first optional block (starting '@'+mainpage) is the global documentation block.
-#*    @li A second optional block (starting '@'+file +<name_file>) is the detailed descripition block.
+#*    @li A second optional block (starting '@'+file) is the detailed descripition block.
 #*    @li Next blocks are standard variable/function block documentation. <br />
 
 #* Documentation works better:

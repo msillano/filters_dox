@@ -13,7 +13,7 @@ This contains following filters for Doxygen:
 - RGXdoxFilter.sh (RGXdoxFilter.bat) for RGX (text files INI-like)
 
 ### Implementation
-All filters are build using 3 main java applications (sources icluded):
+All filters are build using 3 main java basic filter (sources included):
 1. regexfilter.java, general purpose, it replace text using regular expressions. 
 2. xmlfilter.java, general purpose, it transforms the XML input using a XSLT stylesheet.
 3. xslt2doxfilter.java special filter for XSLT file and Doxygen.

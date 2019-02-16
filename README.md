@@ -32,3 +32,14 @@ how make a new custom filter using XSLT, to document a new file format (new exte
 - make a XSLT file to get the rigth output and place it in filters_dox/bin/xslt/   (example xml2dox.xslt)
 - make new drivers (bat and/or sh) and place it in . (examples: XMLdoxFilter.bat / XMLdoxFilter.sh)
 - Using Doxygen GUI, update config in 'expert' tab.
+
+### Note on Doxygen
+Using some of this filters (HTML, XSLT, BAT...) you create many pseudo-function having same names. That makes pages 
+File Members/all and File Menbers/Functions without any interest. In Doxygen-config it is not possible to exclude the 
+creation of that pages (shame). I found a workaround for HTML output (on ver 1.8.15).
+ - Set expert/HTML/HTML_DYNAMIC_MENUS to 'yes'.
+ - Build the documentation.
+ - Edit the files 'navtreedata.js' (for tree menu) and 'menudata.js'  (for tab menu). Using a editor
+with 'parenthesis match' it is easy to delete all items after 'File List'. 
+
+Not elegant, but it works.
